@@ -1,3 +1,12 @@
+
+:root {
+  --benefits-bg: url('https://images.squarespace-cdn.com/content/v1/63b5b1eb7c52ac4609c8543a/1748387644189-0JUB59Y9X1WS664VR86D/unsplash-image-CQwNdMxwjfk.jpg?format=1500w');
+}
+
+
+
+
+
 /* === HERO SECTION === */
 
 .product-hero {
@@ -172,7 +181,7 @@
 
 .benefits-section {
   position: relative;
-  background: url('https://images.squarespace-cdn.com/content/v1/63b5b1eb7c52ac4609c8543a/1748387644189-0JUB59Y9X1WS664VR86D/unsplash-image-CQwNdMxwjfk.jpg?format=1500w') center/cover no-repeat;
+ background: var(--benefits-bg) center/cover no-repeat;
   padding: 60px 20px;
   font-family: 'Helvetica Neue', sans-serif;
   width: 100vw;
