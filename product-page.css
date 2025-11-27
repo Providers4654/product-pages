@@ -7,9 +7,10 @@
 
 
 
-/* === HERO SECTION === */
+<style>
+/* === GLOBAL HERO STYLES === */
 
-.product-hero {
+.sermorelin-hero {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -23,23 +24,23 @@
   overflow: hidden;
 }
 
-.product-hero-image {
+.sermorelin-hero-image {
   flex: 1 1 440px;
   text-align: center;
   margin-bottom: 12px;
 }
 
-.product-hero-image img {
+.sermorelin-hero-image img {
   max-width: 100%;
   border-radius: 20px;
 }
 
-.product-hero-text {
+.sermorelin-hero-text {
   flex: 1 1 440px;
   padding-left: 40px;
 }
 
-.product-hero h2 {
+.sermorelin-hero h2 {
   font-size: 28px;
   font-weight: 700;
   color: #2e2e2e;
@@ -47,20 +48,26 @@
   margin-bottom: 14px;
 }
 
-.product-hero p {
+.sermorelin-hero p {
   font-size: 16px;
   color: #333;
   margin-bottom: 20px;
   line-height: 1.5;
 }
 
-.product-cta {
+.sermorelin-cta {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-start; /* left align on desktop */
   margin-top: 8px;
 }
 
-.product-cta a {
+.cta-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sermorelin-cta a {
   background: #bd243f;
   color: #fff;
   text-decoration: none;
@@ -75,11 +82,98 @@
   cursor: pointer;
 }
 
-.product-cta a:hover {
+.sermorelin-cta a:hover {
   background: #a21a32;
 }
 
-/* === STICKY CTA BAR === */
+.hsa-badge img {
+  width: 80px;
+  height: 40px;
+}
+
+.product-price-note {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.product-price-note a {
+  color: #bd243f;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.product-price-note .mobile-break {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sermorelin-hero {
+    margin: 8px auto;
+    padding: 20px 20px;
+    text-align: center;
+    border-radius: 20px;
+  }
+
+  .sermorelin-hero-text {
+    padding-left: 0;
+  }
+
+  .sermorelin-hero h2 {
+    font-size: 22px;
+    margin: 8px 0 4px;
+  }
+
+  .sermorelin-hero p {
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 0 6px;
+  }
+
+  .sermorelin-cta {
+    justify-content: center; /* center on mobile */
+    padding-left: 0;
+  }
+
+  .cta-button-wrapper {
+    margin-left: 0;
+  }
+
+  .sermorelin-cta a {
+    padding: 15px 50px;
+    font-size: 14px;
+    height: 36px;
+  }
+
+  .hsa-badge img {
+    width: 70px;
+    height: 40px;
+  }
+
+  .product-price-note {
+    text-align: center;
+  }
+
+  .product-price-note .mobile-break {
+    display: inline;
+  }
+}
+
+</style>
+
+
+
+
+<!-- STICKY CTA BAR -->
+<style>
+
+/* HIDE THE STICKY CTA */
+.sticky-cta-bar {
+  display: none !important;
+}
+
+
 .sticky-cta-bar {
   position: fixed;
   bottom: 0;
@@ -139,21 +233,49 @@
   transform: translateY(-1px);
 }
 
-/* === WHAT IT IS SECTION === */
+@media (max-width: 768px) {
+  .sticky-cta-inner {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
 
-.section-product-intro {
+  .sticky-cta-text {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .sticky-cta-button {
+    width: 100%;
+    padding: 5px 20px;
+    font-size: 14px;
+  }
+
+  .sticky-cta-bar {
+    padding: 8px 16px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  }
+}
+</style>
+
+
+
+<!-- WHAT IS SECTION -->
+<style>
+.section-sermorelin-intro {
   max-width: 800px;
   margin: 20px auto;
   padding: 40px 30px;
   background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   text-align: center;
   font-family: 'Helvetica Neue', sans-serif;
   color: #2e2e2e;
 }
 
-.section-product-intro h2 {
+.section-sermorelin-intro h2 {
   font-size: 28px;
   font-weight: 700;
   color: #bd243f;
@@ -162,7 +284,7 @@
   text-transform: uppercase;
 }
 
-.section-product-intro .divider {
+.section-sermorelin-intro .divider {
   width: 60px;
   height: 4px;
   background: #bd243f;
@@ -170,18 +292,34 @@
   border-radius: 2px;
 }
 
-.section-product-intro p {
+.section-sermorelin-intro p {
   font-size: 16px;
   line-height: 1.7;
   color: #555;
   margin: 0 auto;
 }
 
-/* === BENEFITS SECTION === */
+@media (max-width: 600px) {
+  .section-sermorelin-intro {
+    padding: 24px 16px;
+  }
+  .section-sermorelin-intro h2 {
+    font-size: 24px;
+  }
+  .section-sermorelin-intro p {
+    font-size: 14px;
+  }
+}
+</style>
 
+
+
+
+<!-- KEY BENEFITS -->
+<style>
 .benefits-section {
   position: relative;
- background: var(--benefits-bg) center/cover no-repeat;
+  background: url('https://images.squarespace-cdn.com/content/v1/63b5b1eb7c52ac4609c8543a/1749594514197-OGPP0VJGAP54AHKK3SM4/unsplash-image-V62UrdknDCA.jpg?format=1500w') center/cover no-repeat;
   padding: 60px 20px;
   font-family: 'Helvetica Neue', sans-serif;
   width: 100vw;
@@ -205,7 +343,7 @@
 
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* Always 3 per row on desktop */
   gap: 16px;
 }
 
@@ -220,7 +358,7 @@
   color: #2e2e2e;
   height: 100%;
   box-sizing: border-box;
-  min-height: 120px;
+  min-height: 120px; /* Consistent height */
 }
 
 .benefit-card h4 {
@@ -228,7 +366,7 @@
   font-weight: 700;
   margin-bottom: 4px;
   color: #2e2e2e;
-  min-height: 38px;
+  min-height: 38px; /* Adjust height as needed */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -242,11 +380,44 @@
   color: #333;
   margin-top: 0;
   margin-bottom: 0;
-  flex-grow: 1;
+  flex-grow: 1; /* Fill space to align bottom spacing */
+  display: block;
+  align-items: flex-start;
+  justify-content: center;
 }
 
-/* === HOW IT WORKS SECTION === */
+@media (max-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 10px; /* Keep inside screen boundaries */
+  }
+  .benefit-card {
+    min-height: 110px;
+  }
+  .benefit-card h4 {
+  margin-top: 0;
+}
 
+@media (max-width: 600px) {
+  .benefits-section h2 {
+    font-size: 26px;
+  }
+  .benefit-card h4 {
+    font-size: 14px;
+  }
+  .benefit-card p {
+    font-size: 12px;
+  }
+}
+</style>
+
+
+
+
+
+<!-- HOW IT WORKS -->
+<style>
 .section-how-it-works {
   max-width: 960px;
   margin: 60px auto;
@@ -279,7 +450,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-left: 5px solid #bd243f;
-  min-height: 230px;
+  min-height: 230px; /* or whatever value keeps them balanced */
 }
 
 .how-block:hover {
@@ -302,8 +473,48 @@
   text-align: left;
 }
 
-/* === WHO IT'S FOR SECTION === */
+@media (max-width: 720px) {
+  .section-how-it-works h2 {
+    font-size: 24px;
+  }
+  .how-block h3 {
+    font-size: 18px;
+  }
+  .how-block p {
+    font-size: 14px;
+  }
+}
 
+@media (max-width: 1279px) {
+  .how-grid {
+    grid-template-columns: 1fr; /* Stack vertically */
+  }
+  .how-block {
+    min-height: 100px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .how-block {
+    padding: 2px 16px;
+    min-height: auto; /* override the fixed min-height */
+  }
+
+  .how-block h3 {
+    margin: 16px 0 8px;
+  }
+
+  .how-block p {
+    margin-bottom: 16px;
+  }
+}
+</style>
+
+
+
+
+<!-- WHO IT’S FOR SECTION -->
+<style>
 .section-who-for {
   max-width: 960px;
   margin: 60px auto;
@@ -348,6 +559,7 @@
   margin: 0;
 }
 
+
 .who-list li {
   display: flex;
   align-items: flex-start;
@@ -364,11 +576,26 @@
   margin-top: 2px;
 }
 
-/* === FAQ SECTION === */
 
+@media (max-width: 720px) {
+  .section-who-for h2 {
+    font-size: 22px;
+  }
+  .who-list li {
+    font-size: 14px;
+  }
+}
+</style>
+
+
+
+
+
+<!-- FAQ SECTION -->
+<style>
 .faq-section {
   max-width: 800px;
-  margin: 60px auto 80px;
+  margin: 60px auto;
   padding: 0 24px;
   font-family: 'Helvetica Neue', sans-serif;
 }
@@ -430,90 +657,7 @@
   display: block;
 }
 
-/* === RESPONSIVE === */
-
-@media (max-width: 768px) {
-  .product-hero {
-    margin: 8px auto;
-    padding: 20px 20px;
-    text-align: center;
-    border-radius: 20px;
-  }
-
-  .product-hero-text {
-    padding-left: 0;
-  }
-
-  .product-hero h2 {
-    font-size: 22px;
-    margin: 8px 0 4px;
-  }
-
-  .product-hero p {
-    font-size: 14px;
-    line-height: 1.4;
-    padding: 0 6px;
-  }
-
-  .product-cta {
-    justify-content: center;
-    padding-left: 0;
-  }
-
-  .sticky-cta-inner {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .sticky-cta-text {
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  .sticky-cta-button {
-    width: 100%;
-    padding: 5px 20px;
-    font-size: 14px;
-  }
-
-  .sticky-cta-bar {
-    padding: 8px 16px;
-    border-radius: 10px 10px 0 0;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  .section-product-intro {
-    padding: 24px 16px;
-  }
-  .section-product-intro h2 {
-    font-size: 24px;
-  }
-  .section-product-intro p {
-    font-size: 14px;
-  }
-
-  .benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 0 7px;
-  }
-  .benefit-card {
-    min-height: 100px;
-  }
-}
-
 @media (max-width: 600px) {
-  .benefits-section h2 {
-    font-size: 26px;
-  }
-  .benefit-card h4 {
-    font-size: 14px;
-  }
-  .benefit-card p {
-    font-size: 12px;
-  }
-
   .faq-section h2 {
     font-size: 20px;
   }
@@ -525,45 +669,4 @@
   }
 }
 
-@media (max-width: 720px) {
-  .section-who-for h2 {
-    font-size: 22px;
-  }
-  .who-list li {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 720px) {
-  .section-how-it-works h2 {
-    font-size: 24px;
-  }
-  .how-block h3 {
-    font-size: 18px;
-  }
-  .how-block p {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 1279px) {
-  .how-grid {
-    grid-template-columns: 1fr;
-  }
-  .how-block {
-    min-height: 100px;
-  }
-}
-
-@media (max-width: 480px) {
-  .how-block {
-    padding: 2px 16px;
-    min-height: auto;
-  }
-  .how-block h3 {
-    margin: 16px 0 8px;
-  }
-  .how-block p {
-    margin-bottom: 16px;
-  }
-}
+</style>
