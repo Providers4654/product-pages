@@ -1,16 +1,12 @@
-
 :root {
   --benefits-bg: url('https://images.squarespace-cdn.com/content/v1/63b5b1eb7c52ac4609c8543a/1748387644189-0JUB59Y9X1WS664VR86D/unsplash-image-CQwNdMxwjfk.jpg?format=1500w');
 }
 
+/* ======================================================
+   === HERO SECTION — MATCHES ORIGINAL SERMORELIN STYLE ===
+   ====================================================== */
 
-
-
-
-<style>
-/* === GLOBAL HERO STYLES === */
-
-.sermorelin-hero {
+.product-hero {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -24,23 +20,23 @@
   overflow: hidden;
 }
 
-.sermorelin-hero-image {
+.product-hero-image {
   flex: 1 1 440px;
   text-align: center;
   margin-bottom: 12px;
 }
 
-.sermorelin-hero-image img {
+.product-hero-image img {
   max-width: 100%;
   border-radius: 20px;
 }
 
-.sermorelin-hero-text {
+.product-hero-text {
   flex: 1 1 440px;
   padding-left: 40px;
 }
 
-.sermorelin-hero h2 {
+.product-hero h2 {
   font-size: 28px;
   font-weight: 700;
   color: #2e2e2e;
@@ -48,26 +44,20 @@
   margin-bottom: 14px;
 }
 
-.sermorelin-hero p {
+.product-hero p {
   font-size: 16px;
   color: #333;
   margin-bottom: 20px;
   line-height: 1.5;
 }
 
-.sermorelin-cta {
+.product-cta {
   display: flex;
-  justify-content: flex-start; /* left align on desktop */
+  justify-content: flex-start;
   margin-top: 8px;
 }
 
-.cta-button-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.sermorelin-cta a {
+.product-cta a {
   background: #bd243f;
   color: #fff;
   text-decoration: none;
@@ -82,97 +72,43 @@
   cursor: pointer;
 }
 
-.sermorelin-cta a:hover {
+.product-cta a:hover {
   background: #a21a32;
 }
 
-.hsa-badge img {
-  width: 80px;
-  height: 40px;
-}
-
-.product-price-note {
-  font-size: 14px;
-  color: #444;
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
-
-.product-price-note a {
-  color: #bd243f;
-  text-decoration: underline;
-  font-weight: 500;
-}
-
-.product-price-note .mobile-break {
-  display: none;
-}
-
 @media (max-width: 768px) {
-  .sermorelin-hero {
+  .product-hero {
     margin: 8px auto;
     padding: 20px 20px;
     text-align: center;
     border-radius: 20px;
   }
-
-  .sermorelin-hero-text {
+  .product-hero-text {
     padding-left: 0;
   }
-
-  .sermorelin-hero h2 {
+  .product-hero h2 {
     font-size: 22px;
     margin: 8px 0 4px;
   }
-
-  .sermorelin-hero p {
+  .product-hero p {
     font-size: 14px;
     line-height: 1.4;
     padding: 0 6px;
   }
-
-  .sermorelin-cta {
-    justify-content: center; /* center on mobile */
+  .product-cta {
+    justify-content: center;
     padding-left: 0;
   }
-
-  .cta-button-wrapper {
-    margin-left: 0;
-  }
-
-  .sermorelin-cta a {
+  .product-cta a {
     padding: 15px 50px;
     font-size: 14px;
     height: 36px;
   }
-
-  .hsa-badge img {
-    width: 70px;
-    height: 40px;
-  }
-
-  .product-price-note {
-    text-align: center;
-  }
-
-  .product-price-note .mobile-break {
-    display: inline;
-  }
 }
 
-</style>
-
-
-
-
-<!-- STICKY CTA BAR -->
-<style>
-
-/* HIDE THE STICKY CTA */
-.sticky-cta-bar {
-  display: none !important;
-}
-
+/* ========================================
+   === STICKY CTA — SAME AS ORIGINAL ===
+   ======================================== */
 
 .sticky-cta-bar {
   position: fixed;
@@ -189,14 +125,8 @@
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .sticky-cta-inner {
@@ -223,8 +153,8 @@
   font-weight: 600;
   font-size: 16px;
   text-decoration: none;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 10px rgba(189, 36, 63, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .sticky-cta-button:hover {
@@ -234,36 +164,20 @@
 }
 
 @media (max-width: 768px) {
-  .sticky-cta-inner {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .sticky-cta-text {
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  .sticky-cta-button {
-    width: 100%;
-    padding: 5px 20px;
-    font-size: 14px;
-  }
-
+  .sticky-cta-inner { flex-direction: column; gap: 8px; text-align: center; }
+  .sticky-cta-text { font-size: 14px; }
+  .sticky-cta-button { width: 100%; padding: 5px 20px; font-size: 14px; }
   .sticky-cta-bar {
     padding: 8px 16px;
     border-radius: 10px 10px 0 0;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   }
 }
-</style>
 
+/* ====================================================
+   === WHAT IS SECTION — MATCHES ORIGINAL STYLE ===
+   ==================================================== */
 
-
-<!-- WHAT IS SECTION -->
-<style>
-.section-sermorelin-intro {
+.section-product-intro {
   max-width: 800px;
   margin: 20px auto;
   padding: 40px 30px;
@@ -275,16 +189,16 @@
   color: #2e2e2e;
 }
 
-.section-sermorelin-intro h2 {
+.section-product-intro h2 {
   font-size: 28px;
   font-weight: 700;
   color: #bd243f;
   margin-bottom: 12px;
-  letter-spacing: 1px;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.section-sermorelin-intro .divider {
+.section-product-intro .divider {
   width: 60px;
   height: 4px;
   background: #bd243f;
@@ -292,34 +206,25 @@
   border-radius: 2px;
 }
 
-.section-sermorelin-intro p {
+.section-product-intro p {
   font-size: 16px;
   line-height: 1.7;
   color: #555;
-  margin: 0 auto;
 }
 
 @media (max-width: 600px) {
-  .section-sermorelin-intro {
-    padding: 24px 16px;
-  }
-  .section-sermorelin-intro h2 {
-    font-size: 24px;
-  }
-  .section-sermorelin-intro p {
-    font-size: 14px;
-  }
+  .section-product-intro { padding: 24px 16px; }
+  .section-product-intro h2 { font-size: 24px; }
+  .section-product-intro p { font-size: 14px; }
 }
-</style>
 
+/* ====================================================
+   === KEY BENEFITS — MATCHES ORIGINAL STYLE ===
+   ==================================================== */
 
-
-
-<!-- KEY BENEFITS -->
-<style>
 .benefits-section {
   position: relative;
-  background: url('https://images.squarespace-cdn.com/content/v1/63b5b1eb7c52ac4609c8543a/1749594514197-OGPP0VJGAP54AHKK3SM4/unsplash-image-V62UrdknDCA.jpg?format=1500w') center/cover no-repeat;
+  background: var(--benefits-bg) center/cover no-repeat;
   padding: 60px 20px;
   font-family: 'Helvetica Neue', sans-serif;
   width: 100vw;
@@ -337,93 +242,61 @@
   font-weight: 800;
   color: white;
   margin-bottom: 20px;
-  letter-spacing: 1px;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Always 3 per row on desktop */
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
 .benefit-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   padding: 16px 12px;
   text-align: center;
   color: #2e2e2e;
-  height: 100%;
-  box-sizing: border-box;
-  min-height: 120px; /* Consistent height */
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.benefit-card h4 {
+.benefit-card h3 {
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 4px;
-  color: #2e2e2e;
-  min-height: 38px; /* Adjust height as needed */
+  min-height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  margin-top: 0;
 }
 
 .benefit-card p {
   font-size: 13px;
   line-height: 1.4;
-  color: #333;
-  margin-top: 0;
-  margin-bottom: 0;
-  flex-grow: 1; /* Fill space to align bottom spacing */
-  display: block;
-  align-items: flex-start;
-  justify-content: center;
+  flex-grow: 1;
 }
 
 @media (max-width: 768px) {
   .benefits-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    padding: 0 10px; /* Keep inside screen boundaries */
-  }
-  .benefit-card {
-    min-height: 110px;
-  }
-  .benefit-card h4 {
-  margin-top: 0;
-}
-
-@media (max-width: 600px) {
-  .benefits-section h2 {
-    font-size: 26px;
-  }
-  .benefit-card h4 {
-    font-size: 14px;
-  }
-  .benefit-card p {
-    font-size: 12px;
+    padding: 0 10px;
   }
 }
-</style>
 
+/* ====================================================
+   === HOW IT WORKS — MATCHES ORIGINAL STYLE ===
+   ==================================================== */
 
-
-
-
-<!-- HOW IT WORKS -->
-<style>
 .section-how-it-works {
   max-width: 960px;
   margin: 60px auto;
   padding: 0 24px;
   font-family: 'Helvetica Neue', sans-serif;
-  color: #2e2e2e;
 }
 
 .section-how-it-works h2 {
@@ -440,87 +313,51 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px;
-  align-items: start;
 }
 
-.how-block {
+.how-card {
   background: linear-gradient(135deg, #f7f7f7 0%, #ffffff 100%);
   padding: 32px 28px;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-left: 5px solid #bd243f;
-  min-height: 230px; /* or whatever value keeps them balanced */
+  transition: 0.3s ease;
 }
 
-.how-block:hover {
+.how-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
-.how-block h3 {
+.how-card h3 {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 14px;
-  color: #2e2e2e;
-  text-align: left;
 }
 
-.how-block p {
+.how-card p {
   font-size: 15px;
-  color: #555;
   line-height: 1.7;
-  text-align: left;
-}
-
-@media (max-width: 720px) {
-  .section-how-it-works h2 {
-    font-size: 24px;
-  }
-  .how-block h3 {
-    font-size: 18px;
-  }
-  .how-block p {
-    font-size: 14px;
-  }
+  color: #555;
 }
 
 @media (max-width: 1279px) {
-  .how-grid {
-    grid-template-columns: 1fr; /* Stack vertically */
-  }
-  .how-block {
-    min-height: 100px !important;
-  }
+  .how-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .how-block {
-    padding: 2px 16px;
-    min-height: auto; /* override the fixed min-height */
-  }
-
-  .how-block h3 {
-    margin: 16px 0 8px;
-  }
-
-  .how-block p {
-    margin-bottom: 16px;
-  }
+  .how-card { padding: 2px 16px; }
 }
-</style>
 
+/* ====================================================
+   === WHO IT'S FOR — MATCHES ORIGINAL STYLE ===
+   ==================================================== */
 
-
-
-<!-- WHO IT’S FOR SECTION -->
-<style>
 .section-who-for {
   max-width: 960px;
   margin: 60px auto;
   padding: 0 24px;
   font-family: 'Helvetica Neue', sans-serif;
-  color: #2e2e2e;
 }
 
 .section-who-for h2 {
@@ -541,8 +378,7 @@
   background: #fff;
   padding: 24px;
   border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  text-align: left;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
 .who-card h3 {
@@ -553,49 +389,24 @@
   text-align: center;
 }
 
-.who-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-
 .who-list li {
   display: flex;
-  align-items: flex-start;
   gap: 12px;
   font-size: 15px;
-  line-height: 1.5;
   margin-bottom: 16px;
 }
 
 .who-list li span.emoji {
-  flex-shrink: 0;
   font-size: 14px;
-  line-height: 1.5;
-  margin-top: 2px;
 }
 
+/* ====================================================
+   === FAQ SECTION — MATCHES ORIGINAL STYLE ===
+   ==================================================== */
 
-@media (max-width: 720px) {
-  .section-who-for h2 {
-    font-size: 22px;
-  }
-  .who-list li {
-    font-size: 14px;
-  }
-}
-</style>
-
-
-
-
-
-<!-- FAQ SECTION -->
-<style>
 .faq-section {
   max-width: 800px;
-  margin: 60px auto;
+  margin: 60px auto 80px;
   padding: 0 24px;
   font-family: 'Helvetica Neue', sans-serif;
 }
@@ -605,17 +416,15 @@
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 32px;
-  color: #2e2e2e;
 }
 
 .faq-item {
   background: #f9f9f9;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   padding: 16px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   margin-bottom: 16px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .faq-item:hover {
@@ -627,28 +436,27 @@
   font-size: 16px;
   font-weight: 600;
   color: #bd243f;
-  position: relative;
   padding-right: 24px;
+  position: relative;
 }
 
 .faq-question::after {
-  content: '+';
+  content: "+";
   position: absolute;
   right: 0;
   top: 0;
   font-size: 18px;
   color: #bd243f;
-  transition: transform 0.2s ease;
 }
 
 .faq-question.open::after {
-  content: '–';
+  content: "–";
 }
 
 .faq-answer {
   font-size: 14px;
-  color: #444;
   line-height: 1.5;
+  color: #444;
   margin-top: 12px;
   display: none;
 }
@@ -656,17 +464,3 @@
 .faq-answer.open {
   display: block;
 }
-
-@media (max-width: 600px) {
-  .faq-section h2 {
-    font-size: 20px;
-  }
-  .faq-question {
-    font-size: 15px;
-  }
-  .faq-answer {
-    font-size: 13px;
-  }
-}
-
-</style>
