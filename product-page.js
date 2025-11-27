@@ -4,10 +4,10 @@
 
   function getSlug() {
     var path = window.location.pathname || "/";
-    path = path.replace(/\/$/, ""); // remove trailing slash
+    path = path.replace(/\/$/, ""); 
     var parts = path.split("/").filter(Boolean);
     if (!parts.length) return "/";
-    var last = parts[parts.length - 1]; // e.g. "sermorelin"
+    var last = parts[parts.length - 1];
     return "/" + last.toLowerCase();
   }
 
@@ -44,7 +44,6 @@
       var ch = line[i];
       if (ch === '"') {
         if (inQuotes && line[i + 1] === '"') {
-          // escaped quote
           current += '"';
           i++;
         } else {
@@ -61,37 +60,26 @@
     return result;
   }
 
-  function splitList(value) {
+  // NEW unified parser for "~ Title: Description"
+  function parseTitleBodyList(value) {
     if (!value) return [];
+
     return value
-      .split("||")
-      .map(function (s) {
-        return s.trim();
-      })
-      .filter(Boolean);
+      .split("\n")
+      .map(v => v.trim())
+      .filter(v => v.startsWith("~"))
+      .map(v => v.replace(/^~\s*/, ""))
+      .map(v => {
+        const idx = v.indexOf(":");
+        if (idx === -1) {
+          return { title: v.trim(), body: "" };
+        }
+        return {
+          title: v.slice(0, idx).trim(),
+          body: v.slice(idx + 1).trim(),
+        };
+      });
   }
-
-// NEW: Parse "~ Title: Description" list format
-function parseTitleBodyList(value) {
-  if (!value) return [];
-
-  return value
-    .split("\n")                  // split into lines
-    .map(v => v.trim())           // remove whitespace
-    .filter(v => v.startsWith("~")) // only lines beginning with "~"
-    .map(v => v.replace(/^~\s*/, "")) // remove "~ " prefix
-    .map(v => {
-      const idx = v.indexOf(":");
-      if (idx === -1) {
-        return { title: v.trim(), body: "" }; // no description
-      }
-      return {
-        title: v.slice(0, idx).trim(),
-        body: v.slice(idx + 1).trim(),
-      };
-    });
-}
-
 
   function findRowForSlug(rows, slug) {
     var match = rows.find(function (row) {
@@ -100,7 +88,6 @@ function parseTitleBodyList(value) {
     });
     if (match) return match;
 
-    // fallback: compare without leading slash
     var bareSlug = slug.replace(/^\//, "");
     match = rows.find(function (row) {
       var val = (row["Product"] || "").trim().toLowerCase();
@@ -115,29 +102,19 @@ function parseTitleBodyList(value) {
   function renderProduct(root, row) {
     var heroTitle = row["Header Text"] || "";
     var heroImage = row["Header Pic"] || "";
-    // OPTIONAL: if you later add a "Hero Body" column, we can use that here:
     var heroBody = row["Hero Body"] || "";
     var whatBody = row["What it is?"] || "";
 
-    var buttonText =
-      row["Header Button Text"] || "Order Requests & Pricing";
+    var buttonText = row["Header Button Text"] || "Order Requests & Pricing";
     var buttonLink =
       row["Header Button Link"] ||
       "https://www.mtnhlth.com/prescription-order-form";
 
     var benefits = parseTitleBodyList(row["Key Benefits"] || "");
     var howList = parseTitleBodyList(row["How It Works"] || "");
-    var whoForList = splitList(row["Who It's For"] || "");
-    var whoNotList = splitList(row["Who It's Not For"] || "");
-
-    var faqs = [];
-    for (var i = 1; i <= 5; i++) {
-      var q = row["Q" + i];
-      var a = row["A" + i];
-      if (q && a) {
-        faqs.push({ q: q, a: a });
-      }
-    }
+    var whoForList = parseTitleBodyList(row["Who It's For"] || "");
+    var whoNotList = parseTitleBodyList(row["Who It's Not For"] || "");
+    var faqs = parseTitleBodyList(row["FAQ"] || "");
 
     // HERO
     var imgEl = root.querySelector('[data-role="hero-image"]');
@@ -148,22 +125,15 @@ function parseTitleBodyList(value) {
     if (imgEl && heroImage) {
       imgEl.src = heroImage;
       imgEl.alt = heroTitle || "Product image";
-    } else if (imgEl && !heroImage) {
+    } else if (imgEl) {
       imgEl.parentElement.style.display = "none";
     }
 
-    if (titleEl) {
-      titleEl.textContent = heroTitle || "";
-    }
+    if (titleEl) titleEl.textContent = heroTitle || "";
     if (subtitleEl) {
-      if (heroBody) {
-        subtitleEl.textContent = heroBody;
-      } else if (whatBody) {
-        // fallback: short description from "What it is?"
-        subtitleEl.textContent = whatBody;
-      } else {
-        subtitleEl.style.display = "none";
-      }
+      if (heroBody) subtitleEl.textContent = heroBody;
+      else if (whatBody) subtitleEl.textContent = whatBody;
+      else subtitleEl.style.display = "none";
     }
     if (btnEl) {
       btnEl.textContent = buttonText;
@@ -171,24 +141,16 @@ function parseTitleBodyList(value) {
     }
 
     // BENEFITS
-    var benefitsSection = root.querySelector(
-      '[data-section="benefits"]'
-    );
-    var benefitsGrid = root.querySelector(
-      '[data-role="benefits-grid"]'
-    );
+    var benefitsSection = root.querySelector('[data-section="benefits"]');
+    var benefitsGrid = root.querySelector('[data-role="benefits-grid"]');
+
     if (benefitsGrid && benefits.length) {
       benefitsGrid.innerHTML = benefits
         .map(function (b) {
-          if (!b.title && !b.body) return "";
           return (
             '<div class="benefit-card">' +
-            (b.title
-              ? '<h3>' + escapeHtml(b.title) + "</h3>"
-              : "") +
-            (b.body
-              ? "<p>" + escapeHtml(b.body) + "</p>"
-              : "") +
+            (b.title ? '<h3>' + escapeHtml(b.title) + "</h3>" : "") +
+            (b.body ? "<p>" + escapeHtml(b.body) + "</p>" : "") +
             "</div>"
           );
         })
@@ -201,11 +163,10 @@ function parseTitleBodyList(value) {
     var whatSection = root.querySelector('[data-section="what"]');
     var whatHeadingEl = root.querySelector('[data-role="what-heading"]');
     var whatBodyEl = root.querySelector('[data-role="what-body"]');
+
     if (whatBody && whatBodyEl) {
-      // If we have a product name, customize heading
-      if (whatHeadingEl && heroTitle) {
+      if (whatHeadingEl && heroTitle)
         whatHeadingEl.textContent = "What is " + heroTitle + "?";
-      }
       whatBodyEl.textContent = whatBody;
     } else if (whatSection) {
       whatSection.style.display = "none";
@@ -214,18 +175,14 @@ function parseTitleBodyList(value) {
     // HOW IT WORKS
     var howSection = root.querySelector('[data-section="how"]');
     var howGrid = root.querySelector('[data-role="how-grid"]');
+
     if (howGrid && howList.length) {
       howGrid.innerHTML = howList
         .map(function (h) {
-          if (!h.title && !h.body) return "";
           return (
             '<div class="how-card">' +
-            (h.title
-              ? "<h3>" + escapeHtml(h.title) + "</h3>"
-              : "") +
-            (h.body
-              ? "<p>" + escapeHtml(h.body) + "</p>"
-              : "") +
+            (h.title ? "<h3>" + escapeHtml(h.title) + "</h3>" : "") +
+            (h.body ? "<p>" + escapeHtml(h.body) + "</p>" : "") +
             "</div>"
           );
         })
@@ -245,8 +202,10 @@ function parseTitleBodyList(value) {
       whoForUl.innerHTML = whoForList
         .map(function (item) {
           return (
-            '<li><span class="emoji">✅</span><span>' +
-            escapeHtml(item) +
+            '<li><span class="emoji">✅</span><span><strong>' +
+            escapeHtml(item.title) +
+            "</strong>" +
+            (item.body ? ": " + escapeHtml(item.body) : "") +
             "</span></li>"
           );
         })
@@ -259,8 +218,10 @@ function parseTitleBodyList(value) {
       whoNotUl.innerHTML = whoNotList
         .map(function (item) {
           return (
-            '<li><span class="emoji">❌</span><span>' +
-            escapeHtml(item) +
+            '<li><span class="emoji">❌</span><span><strong>' +
+            escapeHtml(item.title) +
+            "</strong>" +
+            (item.body ? ": " + escapeHtml(item.body) : "") +
             "</span></li>"
           );
         })
@@ -269,26 +230,24 @@ function parseTitleBodyList(value) {
       whoNotCard.style.display = "none";
     }
 
-    if (
-      whoSection &&
-      (!whoForList.length && !whoNotList.length)
-    ) {
+    if (whoSection && !whoForList.length && !whoNotList.length) {
       whoSection.style.display = "none";
     }
 
     // FAQ
     var faqSection = root.querySelector('[data-section="faq"]');
     var faqListEl = root.querySelector('[data-role="faq-list"]');
+
     if (faqListEl && faqs.length) {
       faqListEl.innerHTML = faqs
         .map(function (faq) {
           return (
             '<div class="faq-item">' +
             '<div class="faq-question">' +
-            escapeHtml(faq.q) +
+            escapeHtml(faq.title) +
             "</div>" +
             '<div class="faq-answer">' +
-            escapeHtml(faq.a) +
+            escapeHtml(faq.body) +
             "</div>" +
             "</div>"
           );
@@ -300,20 +259,13 @@ function parseTitleBodyList(value) {
     }
 
     // Sticky CTA
-    var stickyBar = root.querySelector(
-      '[data-role="sticky-cta"]'
-    );
-    var stickyTextEl = root.querySelector(
-      '[data-role="sticky-text"]'
-    );
-    var stickyBtnEl = root.querySelector(
-      '[data-role="sticky-button"]'
-    );
+    var stickyBar = root.querySelector('[data-role="sticky-cta"]');
+    var stickyTextEl = root.querySelector('[data-role="sticky-text"]');
+    var stickyBtnEl = root.querySelector('[data-role="sticky-button"]');
 
     if (stickyBar && btnEl) {
       if (stickyTextEl) {
-        stickyTextEl.textContent =
-          heroTitle || "Ready to get started?";
+        stickyTextEl.textContent = heroTitle || "Ready to get started?";
       }
       if (stickyBtnEl) {
         stickyBtnEl.textContent = buttonText;
@@ -368,8 +320,7 @@ function parseTitleBodyList(value) {
   window.MTN_PRODUCT_PAGE_INIT = function (config) {
     var rootId = (config && config.rootId) || "product-root";
     var sheetUrl = config && config.sheetCsvUrl;
-    var root =
-      document.getElementById(rootId) || document.body;
+    var root = document.getElementById(rootId) || document.body;
 
     if (!sheetUrl) {
       root.innerHTML =
