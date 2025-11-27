@@ -71,15 +71,27 @@
       .filter(Boolean);
   }
 
-  function parseTitleBodyList(value) {
-    return splitList(value).map(function (item) {
-      var parts = item.split("::");
+// NEW: Parse "~ Title: Description" list format
+function parseTitleBodyList(value) {
+  if (!value) return [];
+
+  return value
+    .split("\n")                  // split into lines
+    .map(v => v.trim())           // remove whitespace
+    .filter(v => v.startsWith("~")) // only lines beginning with "~"
+    .map(v => v.replace(/^~\s*/, "")) // remove "~ " prefix
+    .map(v => {
+      const idx = v.indexOf(":");
+      if (idx === -1) {
+        return { title: v.trim(), body: "" }; // no description
+      }
       return {
-        title: (parts[0] || "").trim(),
-        body: (parts[1] || "").trim(),
+        title: v.slice(0, idx).trim(),
+        body: v.slice(idx + 1).trim(),
       };
     });
-  }
+}
+
 
   function findRowForSlug(rows, slug) {
     var match = rows.find(function (row) {
