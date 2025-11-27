@@ -1,12 +1,11 @@
 <!-- ============================
-     PRODUCT PAGE TEMPLATE
-     Matches Sermorelin CSS Layout
+     UNIVERSAL PRODUCT PAGE TEMPLATE
      ============================ -->
 
-<!-- HERO SECTION -->
-<section class="product-hero">
+<!-- HERO -->
+<section class="product-hero" data-section="hero">
   <div class="product-hero-image">
-    <img data-role="hero-image" alt="Product Image">
+    <img data-role="hero-image" alt="">
   </div>
 
   <div class="product-hero-text">
@@ -14,76 +13,53 @@
     <p data-role="hero-subtitle"></p>
 
     <div class="product-cta">
-      <a data-role="hero-button" href="#" target="_self"></a>
+      <a data-role="hero-button" href="#"></a>
     </div>
   </div>
 </section>
 
 
 
-<!-- WHAT IS SECTION -->
-<section class="section-product-intro">
-  <h2 data-role="what-title"></h2>
+<!-- WHAT IT IS -->
+<section class="section-product-intro" data-section="what">
+  <h2 data-role="what-heading">What is this?</h2>
   <div class="divider"></div>
   <p data-role="what-body"></p>
 </section>
 
 
 
-<!-- BENEFITS SECTION -->
-<section class="benefits-section">
+<!-- BENEFITS -->
+<section class="benefits-section" data-section="benefits">
   <div class="benefits-overlay">
     <h2>Key Benefits</h2>
-
-    <div class="benefits-grid" data-role="benefits-list">
-      <!-- Example dynamic block:
-      <div class="benefit-card">
-        <h3>Benefit Title</h3>
-        <p>Benefit description text...</p>
-      </div>
-      -->
-    </div>
+    <div class="benefits-grid" data-role="benefits-grid"></div>
   </div>
 </section>
 
 
 
-<!-- HOW IT WORKS SECTION -->
-<section class="section-how-it-works">
+<!-- HOW IT WORKS -->
+<section class="section-how-it-works" data-section="how">
   <h2>How It Works</h2>
-
-  <div class="how-grid" data-role="how-list">
-    <!-- Example dynamic block:
-    <div class="how-card">
-      <h3>Step Title</h3>
-      <p>Step body text...</p>
-    </div>
-    -->
-  </div>
+  <div class="how-grid" data-role="how-grid"></div>
 </section>
 
 
 
-<!-- WHO IT’S FOR SECTION -->
-<section class="section-who-for">
+<!-- WHO IT’S FOR -->
+<section class="section-who-for" data-section="who">
   <h2>Who It’s For</h2>
-
   <div class="who-grid">
-
-    <!-- Ideal Candidates -->
-    <div class="who-card">
+    
+    <div class="who-card" data-role="who-for-card">
       <h3>Ideal Candidates</h3>
-      <ul class="who-list" data-role="for-list">
-        <!-- <li><span class="emoji">✅</span> Reason text...</li> -->
-      </ul>
+      <ul class="who-list" data-role="who-for-list"></ul>
     </div>
 
-    <!-- Not Recommended -->
-    <div class="who-card">
+    <div class="who-card" data-role="who-not-card">
       <h3>Not Recommended For</h3>
-      <ul class="who-list" data-role="notfor-list">
-        <!-- <li><span class="emoji">❌</span> Reason text...</li> -->
-      </ul>
+      <ul class="who-list" data-role="who-not-list"></ul>
     </div>
 
   </div>
@@ -91,16 +67,18 @@
 
 
 
-<!-- FAQ SECTION -->
-<section class="faq-section">
+<!-- FAQ -->
+<section class="faq-section" data-section="faq">
   <h2>Frequently Asked Questions</h2>
-
-  <div data-role="faq-list">
-    <!-- Example FAQ item:
-    <div class="faq-item">
-      <div class="faq-question">Question text...</div>
-      <div class="faq-answer">Answer text...</div>
-    </div>
-    -->
-  </div>
+  <div data-role="faq-list"></div>
 </section>
+
+
+
+<!-- STICKY CTA -->
+<div class="sticky-cta-bar" data-role="sticky-cta" style="display:none">
+  <div class="sticky-cta-inner">
+    <div class="sticky-cta-text" data-role="sticky-text"></div>
+    <a class="sticky-cta-button" data-role="sticky-button" href="#"></a>
+  </div>
+</div>
