@@ -47,10 +47,12 @@
 
 
 /* ============================= */
-/* EQUAL HEIGHT CARDS (GRID-NATIVE) */
+/* EQUAL HEIGHT CARDS (CLEAN)    */
 /* ============================= */
 #product-root .product-page .product-how-grid,#product-root .product-page .product-who-grid{display:grid;align-items:stretch;}
-#product-root .product-page .product-how-card,#product-root .product-page .product-who-card{display:flex;flex-direction:column;}
+#product-root .product-page .product-how-card,#product-root .product-page .product-who-card{display:flex;flex-direction:column;padding:22px 26px;}
+#product-root .product-page .product-how-card h3,#product-root .product-page .product-who-card h3{margin:0 0 10px;}
+#product-root .product-page .product-how-card p,#product-root .product-page .product-who-card p{margin:0;}
 
 
 /* ============================= */
