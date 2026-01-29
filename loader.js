@@ -15,22 +15,19 @@
 
   console.log("[Loader] Product slug:", slug);
 
-// ============================
-// Load CSS (Squarespace-safe)
-// ============================
+  // ============================
+  // Load CSS (Squarespace-safe)
+  // ============================
+  if (!document.getElementById("product-css")) {
+    const style = document.createElement("style");
+    style.id = "product-css";
 
-if (!document.getElementById("product-css")) {
-  const style = document.createElement("style");
-  style.id = "product-css";
+    style.innerHTML = `
+      @import url("https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=${Date.now()}");
+    `;
 
-  style.innerHTML = `
-    @import url("https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=${Date.now()}");
-  `;
-
-  document.head.appendChild(style);
-}
-
-
+    document.head.appendChild(style);
+  }
 
   // ============================
   // Safe CSV Parser (Commas OK)
@@ -129,13 +126,17 @@ if (!document.getElementById("product-css")) {
       // WHO IT'S FOR
       const forHTML = productRows
         .filter(r => r[11])
-        .map(r => `<li><span class="emoji">✅</span>${r[11]}</li>`)
+        .map(r => `
+          <li><span class="emoji">✅</span>${r[11]}</li>
+        `)
         .join("");
 
       // WHO IT'S NOT FOR
       const notHTML = productRows
         .filter(r => r[12])
-        .map(r => `<li><span class="emoji">❌</span>${r[12]}</li>`)
+        .map(r => `
+          <li><span class="emoji">❌</span>${r[12]}</li>
+        `)
         .join("");
 
       // FAQ
@@ -150,78 +151,84 @@ if (!document.getElementById("product-css")) {
         .join("");
 
       // ============================
-      // Render Full Page
+      // Render Full Page (WRAPPED)
       // ============================
       root.innerHTML = `
 
-        <section class="product-hero">
-          <div class="product-hero-image">
-            <img src="${headerPic}" alt="${headerTitle}">
-          </div>
+        <div class="product-page">
 
-          <div class="product-hero-text">
-            <h2>${headerTitle}</h2>
-            <p>${formatText(headerSub)}</p>
-
-            <div class="product-cta">
-              <a href="${btnLink}">${btnText}</a>
-            </div>
-          </div>
-        </section>
-
-        <section class="product-intro">
-          <h2>What is it?</h2>
-          <div class="product-intro-divider"></div>
-          <p>${formatText(whatItIs)}</p>
-        </section>
-
-        <section class="product-benefits">
-          <div class="product-benefits-overlay">
-            <h2>Key Benefits</h2>
-            <div class="product-benefits-grid">
-              ${benefitsHTML}
-            </div>
-          </div>
-        </section>
-
-        <section class="product-how">
-          <h2>How It Works</h2>
-          <div class="product-how-grid">
-            ${howHTML}
-          </div>
-        </section>
-
-        <section class="product-who">
-          <h2>Who It’s For (and Not For)</h2>
-
-          <div class="product-who-grid">
-
-            <div class="product-who-card">
-              <h3>Ideal Candidates</h3>
-              <ul class="product-who-list">
-                ${forHTML}
-              </ul>
+          <section class="product-hero">
+            <div class="product-hero-image">
+              <img src="${headerPic}" alt="${headerTitle}">
             </div>
 
-            <div class="product-who-card">
-              <h3>Not Recommended For</h3>
-              <ul class="product-who-list">
-                ${notHTML}
-              </ul>
+            <div class="product-hero-text">
+              <h2>${headerTitle}</h2>
+              <p>${formatText(headerSub)}</p>
+
+              <div class="product-cta">
+                <a href="${btnLink}">${btnText}</a>
+              </div>
             </div>
+          </section>
 
-          </div>
-        </section>
+          <section class="product-intro">
+            <h2>What is it?</h2>
+            <div class="product-intro-divider"></div>
+            <p>${formatText(whatItIs)}</p>
+          </section>
 
-        <section class="product-faq">
-          <h2>Frequently Asked Questions</h2>
-          ${faqHTML}
-        </section>
+          <section class="product-benefits">
+            <div class="product-benefits-overlay">
+              <h2>Key Benefits</h2>
+              <div class="product-benefits-grid">
+                ${benefitsHTML}
+              </div>
+            </div>
+          </section>
+
+          <section class="product-how">
+            <h2>How It Works</h2>
+            <div class="product-how-grid">
+              ${howHTML}
+            </div>
+          </section>
+
+          <section class="product-who">
+            <h2>Who It’s For (and Not For)</h2>
+
+            <div class="product-who-grid">
+
+              <div class="product-who-card">
+                <h3>Ideal Candidates</h3>
+                <ul class="product-who-list">
+                  ${forHTML}
+                </ul>
+              </div>
+
+              <div class="product-who-card">
+                <h3>Not Recommended For</h3>
+                <ul class="product-who-list">
+                  ${notHTML}
+                </ul>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="product-faq">
+            <h2>Frequently Asked Questions</h2>
+            ${faqHTML}
+          </section>
+
+        </div>
       `;
 
       console.log("[Loader] Product page rendered successfully.");
 
-      // Activate FAQ accordion
+      // ============================
+      // Activate FAQ Accordion
+      // ============================
       document.querySelectorAll(".product-faq-question").forEach(q => {
         q.addEventListener("click", () => {
           q.classList.toggle("open");
