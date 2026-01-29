@@ -36,43 +36,6 @@
 
   console.log("✅ Page slug detected:", slug);
 
-  // ============================
-  // ✅ LOAD CSS PROPERLY (LIKE WELLNESS PLAN)
-  // ============================
-  function loadProductCSS() {
-    return new Promise(resolve => {
-
-      // Prevent duplicates
-      if (document.getElementById("product-css-link")) {
-        console.log("✅ Product CSS already loaded.");
-        resolve();
-        return;
-      }
-
-      console.log("🎨 Injecting Product CSS via <link>...");
-
-      const link = document.createElement("link");
-      link.id = "product-css-link";
-      link.rel = "stylesheet";
-
-      // Cache-busting version
-      link.href =
-        "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
-        Date.now();
-
-      link.onload = () => {
-        console.log("✅ Product CSS loaded successfully!");
-        resolve();
-      };
-
-      link.onerror = err => {
-        console.error("❌ Product CSS failed to load:", err);
-        resolve(); // allow page to continue anyway
-      };
-
-      document.head.appendChild(link);
-    });
-  }
 
   // ============================
   // SAFE CSV PARSER
@@ -142,7 +105,6 @@
   // ============================
   // MAIN LOAD FLOW
   // ============================
-  loadProductCSS().then(() => {
 
     console.log("=====================================");
     console.log("✅ CSS READY — Now fetching spreadsheet...");
@@ -267,6 +229,5 @@
         root.innerHTML = "<p>Error loading product content.</p>";
       });
 
-  });
 
 })();
