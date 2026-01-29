@@ -32,40 +32,41 @@
 
   console.log("✅ Page slug detected:", slug);
 
-  // ============================
-  // LOAD CSS PROPERLY
-  // ============================
-  console.log("🎨 Attempting CSS injection...");
+// ============================
+// LOAD CSS PROPERLY (Wellness Plan Style)
+// ============================
 
-  if (!document.getElementById("product-css")) {
+console.log("🎨 Attempting CSS injection...");
 
-    const link = document.createElement("link");
-    link.id = "product-css";
-    link.rel = "stylesheet";
+if (!document.getElementById("product-css")) {
 
-    link.href =
-      "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
-      Date.now();
+  const link = document.createElement("link");
+  link.id = "product-css";
+  link.rel = "stylesheet";
 
-    console.log("📌 CSS href:", link.href);
+  // ✅ Use GitHub Pages EXACTLY like Wellness Plan
+  link.href =
+    "https://providers4654.github.io/product-pages/product-page.css?v=" +
+    Date.now();
 
-    // Success callback
-    link.onload = () => {
-      console.log("✅ CSS LOADED SUCCESSFULLY!");
-    };
+  console.log("📌 CSS href:", link.href);
 
-    // Failure callback
-    link.onerror = (e) => {
-      console.error("❌ CSS FAILED TO LOAD!", e);
-    };
+  link.onload = () => {
+    console.log("✅ CSS LOADED SUCCESSFULLY!");
+  };
 
-    document.head.appendChild(link);
+  link.onerror = (e) => {
+    console.error("❌ CSS FAILED TO LOAD!", e);
+  };
 
-    console.log("✅ CSS <link> appended to <head>:", link);
+  document.head.appendChild(link);
 
-  } else {
-    console.log("⚠️ CSS already exists, skipping injection.");
-  }
+  console.log("✅ CSS <link> appended to <head>:", link);
+
+} else {
+  console.log("⚠️ CSS already exists, skipping injection.");
+}
+
 
   // ============================
   // SAFE CSV PARSER
