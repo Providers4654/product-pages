@@ -10,13 +10,13 @@
   const root = document.getElementById("product-root");
   if (!root) return;
 
-  // Get slug (ex: sermorelin-2)
-  const slug = window.location.pathname.replace("/", "").trim();
+  // Slug: sermorelin-2
+  const slug = window.location.pathname.replace(/^\/+/, "").trim();
 
   console.log("[Loader] Product slug:", slug);
 
   // ============================
-  // Load CSS (no cache)
+  // Load CSS (No Cache)
   // ============================
   const css = document.createElement("link");
   css.rel = "stylesheet";
@@ -26,7 +26,7 @@
   document.head.appendChild(css);
 
   // ============================
-  // Safe CSV Parser (commas OK)
+  // Safe CSV Parser (Commas OK)
   // ============================
   function parseCSV(text) {
     const rows = [];
@@ -60,7 +60,7 @@
   }
 
   // ============================
-  // Preserve Paragraph Breaks
+  // Preserve Returns in Cells
   // ============================
   function formatText(text) {
     if (!text) return "";
@@ -76,19 +76,18 @@
 
       const rows = parseCSV(csv).slice(1);
 
-      // Filter all rows matching slug
+      // Match product rows
       const productRows = rows.filter(r => r[0] === slug);
 
       if (!productRows.length) {
         root.innerHTML = `
           <p style="color:red;text-align:center;">
-            No product data found for: ${slug}
+            No product data found for: <b>${slug}</b>
           </p>
         `;
         return;
       }
 
-      // Use first row for global hero fields
       const first = productRows[0];
 
       const headerPic   = first[1];
@@ -98,9 +97,7 @@
       const btnLink     = first[5];
       const whatItIs    = first[6];
 
-      // ============================
-      // BENEFITS (I + J)
-      // ============================
+      // BENEFITS
       const benefitsHTML = productRows
         .filter(r => r[7])
         .map(r => `
@@ -111,9 +108,7 @@
         `)
         .join("");
 
-      // ============================
-      // HOW IT WORKS (K + L)
-      // ============================
+      // HOW IT WORKS
       const howHTML = productRows
         .filter(r => r[9])
         .map(r => `
@@ -124,25 +119,19 @@
         `)
         .join("");
 
-      // ============================
-      // WHO IT'S FOR (M)
-      // ============================
+      // WHO IT'S FOR
       const forHTML = productRows
         .filter(r => r[11])
         .map(r => `<li><span class="emoji">✅</span>${r[11]}</li>`)
         .join("");
 
-      // ============================
-      // WHO IT'S NOT FOR (N)
-      // ============================
+      // WHO IT'S NOT FOR
       const notHTML = productRows
         .filter(r => r[12])
         .map(r => `<li><span class="emoji">❌</span>${r[12]}</li>`)
         .join("");
 
-      // ============================
-      // FAQ (O + P)
-      // ============================
+      // FAQ
       const faqHTML = productRows
         .filter(r => r[13])
         .map(r => `
@@ -154,11 +143,10 @@
         .join("");
 
       // ============================
-      // Render Full Product Page
+      // Render Full Page
       // ============================
       root.innerHTML = `
 
-        <!-- HERO -->
         <section class="product-hero">
           <div class="product-hero-image">
             <img src="${headerPic}" alt="${headerTitle}">
@@ -174,14 +162,12 @@
           </div>
         </section>
 
-        <!-- INTRO -->
         <section class="product-intro">
           <h2>What is it?</h2>
           <div class="product-intro-divider"></div>
           <p>${formatText(whatItIs)}</p>
         </section>
 
-        <!-- BENEFITS -->
         <section class="product-benefits">
           <div class="product-benefits-overlay">
             <h2>Key Benefits</h2>
@@ -191,7 +177,6 @@
           </div>
         </section>
 
-        <!-- HOW IT WORKS -->
         <section class="product-how">
           <h2>How It Works</h2>
           <div class="product-how-grid">
@@ -199,7 +184,6 @@
           </div>
         </section>
 
-        <!-- WHO IT'S FOR -->
         <section class="product-who">
           <h2>Who It’s For (and Not For)</h2>
 
@@ -222,19 +206,15 @@
           </div>
         </section>
 
-        <!-- FAQ -->
         <section class="product-faq">
           <h2>Frequently Asked Questions</h2>
           ${faqHTML}
         </section>
-
       `;
 
-      console.log("[Loader] Full product page rendered.");
+      console.log("[Loader] Product page rendered successfully.");
 
-      // ============================
-      // FAQ Accordion Activation
-      // ============================
+      // Activate FAQ accordion
       document.querySelectorAll(".product-faq-question").forEach(q => {
         q.addEventListener("click", () => {
           q.classList.toggle("open");
