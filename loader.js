@@ -32,41 +32,44 @@
 
   console.log("✅ Page slug detected:", slug);
 
-// ============================
-// LOAD CSS PROPERLY (Wellness Plan Style)
-// ============================
+  // ============================
+  // LOAD CSS (WAIT UNTIL READY)
+  // ============================
+  console.log("🎨 Injecting CSS...");
 
-console.log("🎨 Attempting CSS injection...");
+  function loadProductCSS() {
+    return new Promise((resolve, reject) => {
 
-if (!document.getElementById("product-css")) {
+      if (document.getElementById("product-css")) {
+        console.log("⚠️ CSS already loaded.");
+        resolve();
+        return;
+      }
 
-  const link = document.createElement("link");
-  link.id = "product-css";
-  link.rel = "stylesheet";
+      const link = document.createElement("link");
+      link.id = "product-css";
+      link.rel = "stylesheet";
 
-  // ✅ Use GitHub Pages EXACTLY like Wellness Plan
-  link.href =
-    "https://providers4654.github.io/product-pages/product-page.css?v=" +
-    Date.now();
+      link.href =
+        "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
+        Date.now();
 
-  console.log("📌 CSS href:", link.href);
+      console.log("📌 CSS href:", link.href);
 
-  link.onload = () => {
-    console.log("✅ CSS LOADED SUCCESSFULLY!");
-  };
+      link.onload = () => {
+        console.log("✅ CSS LOADED — styles should now apply.");
+        resolve();
+      };
 
-  link.onerror = (e) => {
-    console.error("❌ CSS FAILED TO LOAD!", e);
-  };
+      link.onerror = (e) => {
+        console.error("❌ CSS FAILED TO LOAD!", e);
+        reject(e);
+      };
 
-  document.head.appendChild(link);
-
-  console.log("✅ CSS <link> appended to <head>:", link);
-
-} else {
-  console.log("⚠️ CSS already exists, skipping injection.");
-}
-
+      document.head.appendChild(link);
+      console.log("✅ CSS <link> appended.");
+    });
+  }
 
   // ============================
   // SAFE CSV PARSER
@@ -114,178 +117,187 @@ if (!document.getElementById("product-css")) {
   }
 
   // ============================
-  // FETCH SHEET DATA
+  // MAIN LOAD FLOW (CSS → DATA)
   // ============================
-  console.log("🌐 Fetching spreadsheet CSV...");
+  loadProductCSS().then(() => {
 
-  fetch(sheetCSV + "&t=" + Date.now())
-    .then(res => {
-      console.log("✅ Fetch response received:", res.status);
-      return res.text();
-    })
-    .then(csv => {
+    console.log("=====================================");
+    console.log("✅ CSS READY — Now fetching spreadsheet...");
+    console.log("=====================================");
 
-      console.log("✅ CSV Raw Length:", csv.length);
+    fetch(sheetCSV + "&t=" + Date.now())
+      .then(res => {
+        console.log("✅ Fetch response received:", res.status);
+        return res.text();
+      })
+      .then(csv => {
 
-      const rows = parseCSV(csv).slice(1);
+        console.log("✅ CSV Raw Length:", csv.length);
 
-      console.log("📌 First row sample:", rows[0]);
+        const rows = parseCSV(csv).slice(1);
 
-      // ============================
-      // MATCH PRODUCT ROWS
-      // ============================
-      const productRows = rows.filter(r => r[0] === slug);
+        console.log("📌 First row sample:", rows[0]);
 
-      console.log("🔍 Matching product rows found:", productRows.length);
+        // ============================
+        // MATCH PRODUCT ROWS
+        // ============================
+        const productRows = rows.filter(r => r[0] === slug);
 
-      if (!productRows.length) {
-        console.error("❌ NO MATCHING PRODUCT FOUND FOR:", slug);
+        console.log("🔍 Matching product rows found:", productRows.length);
 
-        root.innerHTML = `
-          <div class="product-page">
-            <p style="color:red;text-align:center;">
-              No product data found for: <b>${slug}</b>
-            </p>
-          </div>
-        `;
-        return;
-      }
+        if (!productRows.length) {
+          console.error("❌ NO MATCHING PRODUCT FOUND FOR:", slug);
 
-      console.log("✅ Product data found!");
-
-      const first = productRows[0];
-
-      // ============================
-      // HEADER FIELDS
-      // ============================
-      const headerPic   = first[1];
-      const headerTitle = first[2];
-      const headerSub   = first[3];
-      const btnText     = first[4];
-      const btnLink     = first[5];
-      const whatItIs    = first[6];
-
-      console.log("🖼 Header image:", headerPic);
-      console.log("📝 Title:", headerTitle);
-
-      // ============================
-      // BUILD SECTIONS
-      // ============================
-      const benefitsHTML = productRows
-        .filter(r => r[7])
-        .map(r => `
-          <div class="product-benefit-card">
-            <h4>${r[7]}</h4>
-            <p>${formatText(r[8])}</p>
-          </div>
-        `)
-        .join("");
-
-      console.log("✅ Benefits built.");
-
-      const faqHTML = productRows
-        .filter(r => r[13])
-        .map(r => `
-          <div class="product-faq-item">
-            <div class="product-faq-question">${r[13]}</div>
-            <div class="product-faq-answer">${formatText(r[14])}</div>
-          </div>
-        `)
-        .join("");
-
-      console.log("✅ FAQ built.");
-
-      // ============================
-      // RENDER FULL PAGE
-      // ============================
-      console.log("🧱 Rendering HTML into root...");
-
-      root.innerHTML = `
-        <div class="product-page">
-
-          <section class="product-hero">
-            <div class="product-hero-image">
-              <img src="${headerPic}" alt="${headerTitle}">
+          root.innerHTML = `
+            <div class="product-page">
+              <p style="color:red;text-align:center;">
+                No product data found for: <b>${slug}</b>
+              </p>
             </div>
-
-            <div class="product-hero-text">
-              <h2>${headerTitle}</h2>
-              <p>${formatText(headerSub)}</p>
-
-              <div class="product-cta">
-                <a href="${btnLink}">${btnText}</a>
-              </div>
-            </div>
-          </section>
-
-          <section class="product-intro">
-            <h2>What is it?</h2>
-            <div class="product-intro-divider"></div>
-            <p>${formatText(whatItIs)}</p>
-          </section>
-
-          <section class="product-benefits">
-            <div class="product-benefits-overlay">
-              <h2>Key Benefits</h2>
-              <div class="product-benefits-grid">
-                ${benefitsHTML}
-              </div>
-            </div>
-          </section>
-
-          <section class="product-faq">
-            <h2>Frequently Asked Questions</h2>
-            ${faqHTML}
-          </section>
-
-        </div>
-      `;
-
-      console.log("✅ Page HTML rendered successfully.");
-
-      // ============================
-      // STYLE CHECK
-      // ============================
-      console.log("🎯 Checking if CSS is applying...");
-
-      setTimeout(() => {
-        const hero = document.querySelector(".product-hero");
-        if (!hero) {
-          console.error("❌ HERO NOT FOUND AFTER RENDER.");
+          `;
           return;
         }
 
-        const styles = window.getComputedStyle(hero);
+        console.log("✅ Product data found!");
 
-        console.log("🎨 HERO background-color:", styles.backgroundColor);
-        console.log("🎨 HERO padding:", styles.padding);
+        const first = productRows[0];
 
-        if (styles.backgroundColor === "rgba(0, 0, 0, 0)" || styles.padding === "0px") {
-          console.error("❌ CSS NOT APPLYING. Hero still looks unstyled.");
-        } else {
-          console.log("✅ CSS IS APPLYING CORRECTLY!");
-        }
-      }, 800);
+        // ============================
+        // HEADER FIELDS
+        // ============================
+        const headerPic   = first[1];
+        const headerTitle = first[2];
+        const headerSub   = first[3];
+        const btnText     = first[4];
+        const btnLink     = first[5];
+        const whatItIs    = first[6];
 
-      // ============================
-      // FAQ TOGGLE
-      // ============================
-      console.log("⚙️ Activating FAQ accordion...");
+        console.log("🖼 Header image:", headerPic);
+        console.log("📝 Title:", headerTitle);
 
-      document.querySelectorAll(".product-faq-question").forEach(q => {
-        q.addEventListener("click", () => {
-          q.classList.toggle("open");
-          const a = q.nextElementSibling;
-          if (a) a.classList.toggle("open");
+        // ============================
+        // BUILD BENEFITS
+        // ============================
+        const benefitsHTML = productRows
+          .filter(r => r[7])
+          .map(r => `
+            <div class="product-benefit-card">
+              <h4>${r[7]}</h4>
+              <p>${formatText(r[8])}</p>
+            </div>
+          `)
+          .join("");
+
+        console.log("✅ Benefits built.");
+
+        // ============================
+        // BUILD FAQ
+        // ============================
+        const faqHTML = productRows
+          .filter(r => r[13])
+          .map(r => `
+            <div class="product-faq-item">
+              <div class="product-faq-question">${r[13]}</div>
+              <div class="product-faq-answer">${formatText(r[14])}</div>
+            </div>
+          `)
+          .join("");
+
+        console.log("✅ FAQ built.");
+
+        // ============================
+        // RENDER FULL PAGE
+        // ============================
+        console.log("🧱 Rendering HTML into root...");
+
+        root.innerHTML = `
+          <div class="product-page">
+
+            <section class="product-hero">
+              <div class="product-hero-image">
+                <img src="${headerPic}" alt="${headerTitle}">
+              </div>
+
+              <div class="product-hero-text">
+                <h2>${headerTitle}</h2>
+                <p>${formatText(headerSub)}</p>
+
+                <div class="product-cta">
+                  <a href="${btnLink}">${btnText}</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="product-intro">
+              <h2>What is it?</h2>
+              <div class="product-intro-divider"></div>
+              <p>${formatText(whatItIs)}</p>
+            </section>
+
+            <section class="product-benefits">
+              <div class="product-benefits-overlay">
+                <h2>Key Benefits</h2>
+                <div class="product-benefits-grid">
+                  ${benefitsHTML}
+                </div>
+              </div>
+            </section>
+
+            <section class="product-faq">
+              <h2>Frequently Asked Questions</h2>
+              ${faqHTML}
+            </section>
+
+          </div>
+        `;
+
+        console.log("✅ Page HTML rendered successfully.");
+
+        // ============================
+        // STYLE CHECK
+        // ============================
+        setTimeout(() => {
+          const hero = document.querySelector(".product-hero");
+
+          if (!hero) {
+            console.error("❌ HERO NOT FOUND AFTER RENDER.");
+            return;
+          }
+
+          const styles = window.getComputedStyle(hero);
+
+          console.log("🎨 HERO background-color:", styles.backgroundColor);
+          console.log("🎨 HERO padding:", styles.padding);
+
+          if (styles.padding === "0px") {
+            console.error("❌ CSS STILL NOT APPLYING.");
+          } else {
+            console.log("✅ CSS IS APPLYING CORRECTLY!");
+          }
+
+        }, 800);
+
+        // ============================
+        // FAQ TOGGLE
+        // ============================
+        console.log("⚙️ Activating FAQ accordion...");
+
+        document.querySelectorAll(".product-faq-question").forEach(q => {
+          q.addEventListener("click", () => {
+            q.classList.toggle("open");
+            const a = q.nextElementSibling;
+            if (a) a.classList.toggle("open");
+          });
         });
+
+        console.log("✅ FAQ accordion active.");
+
+      })
+      .catch(err => {
+        console.error("🔥 Loader FAILED completely:", err);
+        root.innerHTML = "<p>Error loading product content.</p>";
       });
 
-      console.log("✅ FAQ accordion active.");
-
-    })
-    .catch(err => {
-      console.error("🔥 Loader FAILED completely:", err);
-      root.innerHTML = "<p>Error loading product content.</p>";
-    });
+  });
 
 })();
