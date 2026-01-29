@@ -1,5 +1,6 @@
 // ============================
-// PRODUCT PAGE LOADER (DEBUG)
+// PRODUCT PAGE LOADER (FIXED)
+// Repo: loader.js
 // ============================
 
 (() => {
@@ -8,6 +9,9 @@
   console.log("🚀 PRODUCT LOADER STARTING...");
   console.log("=====================================");
 
+  // ============================
+  // PRODUCT SHEET CSV
+  // ============================
   const sheetCSV =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXIDMkRwQTvRXpQ65e6eRSg5ACt1zr-z5eO29D0BjoeD_houihmxUwZlbAUM6gFdxE2cHtHvhAiROL/pub?output=csv";
 
@@ -26,49 +30,54 @@
   console.log("✅ product-root found:", root);
 
   // ============================
-  // SLUG CHECK
+  // PAGE SLUG DETECTION
   // ============================
   const slug = window.location.pathname.replace(/^\/+/, "").trim();
 
   console.log("✅ Page slug detected:", slug);
 
   // ============================
-  // LOAD CSS (WAIT UNTIL READY)
+  // ✅ LOAD CSS PROPERLY (LIKE WELLNESS PLAN)
   // ============================
-console.log("🎨 Injecting INLINE CSS...");
+  function loadProductCSS() {
+    return new Promise(resolve => {
 
-function loadInlineCSS() {
-  return fetch(
-    "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
-      Date.now()
-  )
-    .then(res => {
-      console.log("✅ CSS fetch status:", res.status);
-      return res.text();
-    })
-    .then(cssText => {
+      // Prevent duplicates
+      if (document.getElementById("product-css-link")) {
+        console.log("✅ Product CSS already loaded.");
+        resolve();
+        return;
+      }
 
-      console.log("✅ CSS file downloaded. Length:", cssText.length);
+      console.log("🎨 Injecting Product CSS via <link>...");
 
-      const style = document.createElement("style");
-      style.id = "product-css-inline";
-      style.innerHTML = cssText;
+      const link = document.createElement("link");
+      link.id = "product-css-link";
+      link.rel = "stylesheet";
 
-      document.head.appendChild(style);
+      // Cache-busting version
+      link.href =
+        "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
+        Date.now();
 
-      console.log("🔥 INLINE CSS injected successfully!");
-    })
-    .catch(err => {
-      console.error("❌ INLINE CSS injection failed:", err);
+      link.onload = () => {
+        console.log("✅ Product CSS loaded successfully!");
+        resolve();
+      };
+
+      link.onerror = err => {
+        console.error("❌ Product CSS failed to load:", err);
+        resolve(); // allow page to continue anyway
+      };
+
+      document.head.appendChild(link);
     });
-}
-
+  }
 
   // ============================
   // SAFE CSV PARSER
   // ============================
   function parseCSV(text) {
-    console.log("📄 Parsing CSV text...");
 
     const rows = [];
     let row = [];
@@ -82,27 +91,30 @@ function loadInlineCSS() {
       if (char === '"' && insideQuotes && next === '"') {
         cell += '"';
         i++;
-      } else if (char === '"') {
+      }
+      else if (char === '"') {
         insideQuotes = !insideQuotes;
-      } else if (char === "," && !insideQuotes) {
+      }
+      else if (char === "," && !insideQuotes) {
         row.push(cell);
         cell = "";
-      } else if (char === "\n" && !insideQuotes) {
+      }
+      else if (char === "\n" && !insideQuotes) {
         row.push(cell);
         rows.push(row);
         row = [];
         cell = "";
-      } else {
+      }
+      else {
         cell += char;
       }
     }
 
-    console.log("✅ CSV Parsed. Total rows:", rows.length);
     return rows;
   }
 
   // ============================
-  // FORMAT RETURNS
+  // TEXT FORMATTER
   // ============================
   function formatText(text) {
     if (!text) return "";
@@ -110,27 +122,37 @@ function loadInlineCSS() {
   }
 
   // ============================
-  // MAIN LOAD FLOW (CSS → DATA)
+  // FAQ TOGGLE ACTIVATION
   // ============================
-  loadInlineCSS().then(() => {
+  function activateFAQ() {
+    console.log("⚙️ Activating FAQ accordion...");
 
+    document.querySelectorAll(".product-faq-question").forEach(q => {
+      q.addEventListener("click", () => {
+        q.classList.toggle("open");
+
+        const answer = q.nextElementSibling;
+        if (answer) answer.classList.toggle("open");
+      });
+    });
+
+    console.log("✅ FAQ accordion active.");
+  }
+
+  // ============================
+  // MAIN LOAD FLOW
+  // ============================
+  loadProductCSS().then(() => {
 
     console.log("=====================================");
     console.log("✅ CSS READY — Now fetching spreadsheet...");
     console.log("=====================================");
 
     fetch(sheetCSV + "&t=" + Date.now())
-      .then(res => {
-        console.log("✅ Fetch response received:", res.status);
-        return res.text();
-      })
+      .then(res => res.text())
       .then(csv => {
 
-        console.log("✅ CSV Raw Length:", csv.length);
-
         const rows = parseCSV(csv).slice(1);
-
-        console.log("📌 First row sample:", rows[0]);
 
         // ============================
         // MATCH PRODUCT ROWS
@@ -140,8 +162,6 @@ function loadInlineCSS() {
         console.log("🔍 Matching product rows found:", productRows.length);
 
         if (!productRows.length) {
-          console.error("❌ NO MATCHING PRODUCT FOUND FOR:", slug);
-
           root.innerHTML = `
             <div class="product-page">
               <p style="color:red;text-align:center;">
@@ -166,9 +186,6 @@ function loadInlineCSS() {
         const btnLink     = first[5];
         const whatItIs    = first[6];
 
-        console.log("🖼 Header image:", headerPic);
-        console.log("📝 Title:", headerTitle);
-
         // ============================
         // BUILD BENEFITS
         // ============================
@@ -181,8 +198,6 @@ function loadInlineCSS() {
             </div>
           `)
           .join("");
-
-        console.log("✅ Benefits built.");
 
         // ============================
         // BUILD FAQ
@@ -197,13 +212,9 @@ function loadInlineCSS() {
           `)
           .join("");
 
-        console.log("✅ FAQ built.");
-
         // ============================
         // RENDER FULL PAGE
         // ============================
-        console.log("🧱 Rendering HTML into root...");
-
         root.innerHTML = `
           <div class="product-page">
 
@@ -247,48 +258,12 @@ function loadInlineCSS() {
 
         console.log("✅ Page HTML rendered successfully.");
 
-        // ============================
-        // STYLE CHECK
-        // ============================
-        setTimeout(() => {
-          const hero = document.querySelector(".product-hero");
-
-          if (!hero) {
-            console.error("❌ HERO NOT FOUND AFTER RENDER.");
-            return;
-          }
-
-          const styles = window.getComputedStyle(hero);
-
-          console.log("🎨 HERO background-color:", styles.backgroundColor);
-          console.log("🎨 HERO padding:", styles.padding);
-
-          if (styles.padding === "0px") {
-            console.error("❌ CSS STILL NOT APPLYING.");
-          } else {
-            console.log("✅ CSS IS APPLYING CORRECTLY!");
-          }
-
-        }, 800);
-
-        // ============================
-        // FAQ TOGGLE
-        // ============================
-        console.log("⚙️ Activating FAQ accordion...");
-
-        document.querySelectorAll(".product-faq-question").forEach(q => {
-          q.addEventListener("click", () => {
-            q.classList.toggle("open");
-            const a = q.nextElementSibling;
-            if (a) a.classList.toggle("open");
-          });
-        });
-
-        console.log("✅ FAQ accordion active.");
+        // Activate FAQ AFTER render
+        activateFAQ();
 
       })
       .catch(err => {
-        console.error("🔥 Loader FAILED completely:", err);
+        console.error("🔥 Loader FAILED:", err);
         root.innerHTML = "<p>Error loading product content.</p>";
       });
 
