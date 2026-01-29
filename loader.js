@@ -35,41 +35,34 @@
   // ============================
   // LOAD CSS (WAIT UNTIL READY)
   // ============================
-  console.log("🎨 Injecting CSS...");
+console.log("🎨 Injecting INLINE CSS...");
 
-  function loadProductCSS() {
-    return new Promise((resolve, reject) => {
+function loadInlineCSS() {
+  return fetch(
+    "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
+      Date.now()
+  )
+    .then(res => {
+      console.log("✅ CSS fetch status:", res.status);
+      return res.text();
+    })
+    .then(cssText => {
 
-      if (document.getElementById("product-css")) {
-        console.log("⚠️ CSS already loaded.");
-        resolve();
-        return;
-      }
+      console.log("✅ CSS file downloaded. Length:", cssText.length);
 
-      const link = document.createElement("link");
-      link.id = "product-css";
-      link.rel = "stylesheet";
+      const style = document.createElement("style");
+      style.id = "product-css-inline";
+      style.innerHTML = cssText;
 
-      link.href =
-        "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
-        Date.now();
+      document.head.appendChild(style);
 
-      console.log("📌 CSS href:", link.href);
-
-      link.onload = () => {
-        console.log("✅ CSS LOADED — styles should now apply.");
-        resolve();
-      };
-
-      link.onerror = (e) => {
-        console.error("❌ CSS FAILED TO LOAD!", e);
-        reject(e);
-      };
-
-      document.head.appendChild(link);
-      console.log("✅ CSS <link> appended.");
+      console.log("🔥 INLINE CSS injected successfully!");
+    })
+    .catch(err => {
+      console.error("❌ INLINE CSS injection failed:", err);
     });
-  }
+}
+
 
   // ============================
   // SAFE CSV PARSER
@@ -119,7 +112,8 @@
   // ============================
   // MAIN LOAD FLOW (CSS → DATA)
   // ============================
-  loadProductCSS().then(() => {
+  loadInlineCSS().then(() => {
+
 
     console.log("=====================================");
     console.log("✅ CSS READY — Now fetching spreadsheet...");
