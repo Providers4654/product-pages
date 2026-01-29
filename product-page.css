@@ -44,18 +44,18 @@
 
 
 /* ============================= */
-/* BENEFITS GRID SECTION (GRAD)  */
+/* BENEFITS GRID SECTION (GRAD+) */
 /* ============================= */
-.product-benefits{position:relative;padding:70px 20px;font-family:'Helvetica Neue',sans-serif;width:100vw;margin-left:calc(-50vw + 50%);background:linear-gradient(135deg,#111827,#1f2937);}
+.product-benefits{position:relative;padding:80px 20px;font-family:'Helvetica Neue',sans-serif;width:100vw;margin-left:calc(-50vw + 50%);background:linear-gradient(135deg,#0f172a,#1e293b);}
 .product-benefits-overlay{max-width:1100px;margin:0 auto;}
-.product-benefits h2{text-align:center;font-size:34px;font-weight:800;color:#fff;margin-bottom:28px;letter-spacing:1px;text-transform:uppercase;}
-.product-benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;}
-.product-benefit-card{display:flex;flex-direction:column;justify-content:flex-start;background:rgba(255,255,255,.97);border-radius:16px;padding:20px 18px;text-align:center;color:#222;min-height:140px;box-shadow:0 10px 24px rgba(0,0,0,.18);transition:.25s ease;}
-.product-benefit-card:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.22);}
-.product-benefit-card h4{font-size:16px;font-weight:700;margin:0 0 8px;}
-.product-benefit-card p{font-size:14px;line-height:1.5;color:#444;margin:0;}
-@media(max-width:768px){.product-benefits{padding:55px 16px;}.product-benefits-grid{grid-template-columns:repeat(2,1fr);gap:12px;}}
-@media(max-width:600px){.product-benefits h2{font-size:26px;}.product-benefit-card{padding:16px 14px;}.product-benefit-card h4{font-size:15px;}.product-benefit-card p{font-size:13px;}}
+.product-benefits h2{text-align:center;font-size:36px;font-weight:800;color:#fff;margin-bottom:34px;letter-spacing:1.5px;text-transform:uppercase;}
+.product-benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;}
+.product-benefit-card{display:flex;flex-direction:column;justify-content:center;background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:26px 22px;text-align:center;min-height:165px;box-shadow:0 12px 28px rgba(0,0,0,.22);transition:.25s ease;}
+.product-benefit-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.97);box-shadow:0 18px 38px rgba(0,0,0,.28);}
+.product-benefit-card h4{font-size:17px;font-weight:750;margin:0 0 10px;color:#111;letter-spacing:.2px;}
+.product-benefit-card p{font-size:14.5px;line-height:1.6;color:#444;margin:0;max-width:240px;margin-left:auto;margin-right:auto;}
+@media(max-width:768px){.product-benefits{padding:60px 16px;}.product-benefits-grid{grid-template-columns:repeat(2,1fr);gap:14px;}}
+@media(max-width:600px){.product-benefits h2{font-size:26px;}.product-benefit-card{padding:18px 16px;min-height:140px;border-radius:16px;}.product-benefit-card h4{font-size:15.5px;}.product-benefit-card p{font-size:13px;}}
 
 
 /* ============================= */
