@@ -15,19 +15,22 @@
 
   console.log("[Loader] Product slug:", slug);
 
-  // ============================
-  // Load CSS (Squarespace-safe)
-  // ============================
-  if (!document.getElementById("product-css")) {
-    const style = document.createElement("style");
-    style.id = "product-css";
+// ============================
+// Load CSS (Correct Way)
+// ============================
+if (!document.getElementById("product-css")) {
 
-    style.innerHTML = `
-      @import url("https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=${Date.now()}");
-    `;
+  const link = document.createElement("link");
+  link.id = "product-css";
+  link.rel = "stylesheet";
 
-    document.head.appendChild(style);
-  }
+  link.href =
+    "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
+    Date.now();
+
+  document.head.appendChild(link);
+}
+
 
   // ============================
   // Safe CSV Parser (Commas OK)
