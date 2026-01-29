@@ -1,5 +1,5 @@
 // ============================
-// PRODUCT PAGE LOADER (FIXED)
+// PRODUCT PAGE LOADER (SLOTS ENABLED)
 // Repo: loader.js
 // ============================
 
@@ -35,7 +35,6 @@
   const slug = window.location.pathname.replace(/^\/+/, "").trim();
 
   console.log("✅ Page slug detected:", slug);
-
 
   // ============================
   // SAFE CSV PARSER
@@ -88,14 +87,15 @@
   // FAQ TOGGLE ACTIVATION
   // ============================
   function activateFAQ() {
-    console.log("⚙️ Activating FAQ accordion...");
 
     document.querySelectorAll(".product-faq-question").forEach(q => {
       q.addEventListener("click", () => {
+
         q.classList.toggle("open");
 
         const answer = q.nextElementSibling;
         if (answer) answer.classList.toggle("open");
+
       });
     });
 
@@ -106,128 +106,143 @@
   // MAIN LOAD FLOW
   // ============================
 
-    console.log("=====================================");
-    console.log("✅ CSS READY — Now fetching spreadsheet...");
-    console.log("=====================================");
+  console.log("=====================================");
+  console.log("📥 Fetching spreadsheet...");
+  console.log("=====================================");
 
-    fetch(sheetCSV + "&t=" + Date.now())
-      .then(res => res.text())
-      .then(csv => {
+  fetch(sheetCSV + "&t=" + Date.now())
+    .then(res => res.text())
+    .then(csv => {
 
-        const rows = parseCSV(csv).slice(1);
+      const rows = parseCSV(csv).slice(1);
 
-        // ============================
-        // MATCH PRODUCT ROWS
-        // ============================
-        const productRows = rows.filter(r => r[0] === slug);
+      // ============================
+      // MATCH PRODUCT ROWS
+      // ============================
+      const productRows = rows.filter(r => r[0] === slug);
 
-        console.log("🔍 Matching product rows found:", productRows.length);
+      console.log("🔍 Matching product rows found:", productRows.length);
 
-        if (!productRows.length) {
-          root.innerHTML = `
-            <div class="product-page">
-              <p style="color:red;text-align:center;">
-                No product data found for: <b>${slug}</b>
-              </p>
-            </div>
-          `;
-          return;
-        }
-
-        console.log("✅ Product data found!");
-
-        const first = productRows[0];
-
-        // ============================
-        // HEADER FIELDS
-        // ============================
-        const headerPic   = first[1];
-        const headerTitle = first[2];
-        const headerSub   = first[3];
-        const btnText     = first[4];
-        const btnLink     = first[5];
-        const whatItIs    = first[6];
-
-        // ============================
-        // BUILD BENEFITS
-        // ============================
-        const benefitsHTML = productRows
-          .filter(r => r[7])
-          .map(r => `
-            <div class="product-benefit-card">
-              <h4>${r[7]}</h4>
-              <p>${formatText(r[8])}</p>
-            </div>
-          `)
-          .join("");
-
-        // ============================
-        // BUILD FAQ
-        // ============================
-        const faqHTML = productRows
-          .filter(r => r[13])
-          .map(r => `
-            <div class="product-faq-item">
-              <div class="product-faq-question">${r[13]}</div>
-              <div class="product-faq-answer">${formatText(r[14])}</div>
-            </div>
-          `)
-          .join("");
-
-        // ============================
-        // RENDER FULL PAGE
-        // ============================
+      if (!productRows.length) {
         root.innerHTML = `
           <div class="product-page">
-
-            <section class="product-hero">
-              <div class="product-hero-image">
-                <img src="${headerPic}" alt="${headerTitle}">
-              </div>
-
-              <div class="product-hero-text">
-                <h2>${headerTitle}</h2>
-                <p>${formatText(headerSub)}</p>
-
-                <div class="product-cta">
-                  <a href="${btnLink}">${btnText}</a>
-                </div>
-              </div>
-            </section>
-
-            <section class="product-intro">
-              <h2>What is it?</h2>
-              <div class="product-intro-divider"></div>
-              <p>${formatText(whatItIs)}</p>
-            </section>
-
-            <section class="product-benefits">
-              <div class="product-benefits-overlay">
-                <h2>Key Benefits</h2>
-                <div class="product-benefits-grid">
-                  ${benefitsHTML}
-                </div>
-              </div>
-            </section>
-
-            <section class="product-faq">
-              <h2>Frequently Asked Questions</h2>
-              ${faqHTML}
-            </section>
-
+            <p style="color:red;text-align:center;">
+              No product data found for: <b>${slug}</b>
+            </p>
           </div>
         `;
+        return;
+      }
 
-        console.log("✅ Page HTML rendered successfully.");
+      console.log("✅ Product data found!");
 
-        // Activate FAQ AFTER render
-        activateFAQ();
+      const first = productRows[0];
 
-      })
-      .catch(err => {
-        console.error("🔥 Loader FAILED:", err);
-        root.innerHTML = "<p>Error loading product content.</p>";
-      });
+      // ============================
+      // HEADER FIELDS
+      // ============================
+      const headerPic   = first[1];
+      const headerTitle = first[2];
+      const headerSub   = first[3];
+      const btnText     = first[4];
+      const btnLink     = first[5];
+      const whatItIs    = first[6];
 
+      // ============================
+      // BUILD BENEFITS
+      // ============================
+      const benefitsHTML = productRows
+        .filter(r => r[7])
+        .map(r => `
+          <div class="product-benefit-card">
+            <h4>${r[7]}</h4>
+            <p>${formatText(r[8])}</p>
+          </div>
+        `)
+        .join("");
+
+      // ============================
+      // BUILD FAQ
+      // ============================
+      const faqHTML = productRows
+        .filter(r => r[13])
+        .map(r => `
+          <div class="product-faq-item">
+            <div class="product-faq-question">${r[13]}</div>
+            <div class="product-faq-answer">${formatText(r[14])}</div>
+          </div>
+        `)
+        .join("");
+
+      // ============================
+      // ✅ RENDER FULL PAGE + SLOTS
+      // ============================
+      root.innerHTML = `
+        <div class="product-page">
+
+          <!-- HERO -->
+          <section class="product-hero">
+            <div class="product-hero-image">
+              <img src="${headerPic}" alt="${headerTitle}">
+            </div>
+
+            <div class="product-hero-text">
+              <h2>${headerTitle}</h2>
+              <p>${formatText(headerSub)}</p>
+
+              <div class="product-cta">
+                <a href="${btnLink}">${btnText}</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- ✅ SLOT: AFTER HERO -->
+          <div id="slot-after-hero"></div>
+
+          <!-- INTRO -->
+          <section class="product-intro">
+            <h2>What is it?</h2>
+            <div class="product-intro-divider"></div>
+            <p>${formatText(whatItIs)}</p>
+          </section>
+
+          <!-- ✅ SLOT: AFTER INTRO -->
+          <div id="slot-after-intro"></div>
+
+          <!-- BENEFITS -->
+          <section class="product-benefits">
+            <div class="product-benefits-overlay">
+              <h2>Key Benefits</h2>
+              <div class="product-benefits-grid">
+                ${benefitsHTML}
+              </div>
+            </div>
+          </section>
+
+          <!-- ✅ SLOT: AFTER BENEFITS -->
+          <div id="slot-after-benefits"></div>
+
+          <!-- FAQ -->
+          <section class="product-faq">
+            <h2>Frequently Asked Questions</h2>
+            ${faqHTML}
+          </section>
+
+          <!-- ✅ SLOT: AFTER FAQ -->
+          <div id="slot-after-faq"></div>
+
+        </div>
+      `;
+
+      console.log("✅ Page HTML rendered successfully.");
+
+      // Activate FAQ AFTER render
+      activateFAQ();
+
+    })
+    .catch(err => {
+      console.error("🔥 Loader FAILED:", err);
+      root.innerHTML = "<p>Error loading product content.</p>";
+    });
 
 })();
