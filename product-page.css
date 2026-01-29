@@ -45,6 +45,14 @@
 #product-root .product-page .product-benefit-card p{font-size:13px;line-height:1.45;color:#444;}
 
 
+
+/* ============================= */
+/* EQUAL HEIGHT CARDS         */
+/* ============================= */
+#product-root .product-page .product-how-grid,#product-root .product-page .product-who-grid{align-items:stretch;}
+#product-root .product-page .product-how-card,#product-root .product-page .product-who-card{height:100%;display:flex;flex-direction:column;}
+
+
 /* ============================= */
 /* FAQ SECTION                   */
 /* ============================= */
