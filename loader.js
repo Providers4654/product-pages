@@ -1,5 +1,5 @@
 // ============================
-// PRODUCT PAGE LOADER (CSV CMS)
+// PRODUCT PAGE LOADER (FULL CMS)
 // ============================
 
 (() => {
@@ -10,13 +10,13 @@
   const root = document.getElementById("product-root");
   if (!root) return;
 
-  // Get current slug (ex: sermorelin-2)
+  // Get slug (ex: sermorelin-2)
   const slug = window.location.pathname.replace("/", "").trim();
 
   console.log("[Loader] Product slug:", slug);
 
   // ============================
-  // Load CSS (cache-busted)
+  // Load CSS (no cache)
   // ============================
   const css = document.createElement("link");
   css.rel = "stylesheet";
@@ -26,7 +26,7 @@
   document.head.appendChild(css);
 
   // ============================
-  // Helper: Safe CSV Parser
+  // Safe CSV Parser (commas OK)
   // ============================
   function parseCSV(text) {
     const rows = [];
@@ -60,7 +60,7 @@
   }
 
   // ============================
-  // Helper: Preserve Returns
+  // Preserve Paragraph Breaks
   // ============================
   function formatText(text) {
     if (!text) return "";
@@ -68,16 +68,15 @@
   }
 
   // ============================
-  // Fetch CSV Data (no cache)
+  // Fetch Spreadsheet
   // ============================
   fetch(sheetCSV + "&t=" + Date.now())
     .then(res => res.text())
     .then(csv => {
 
-      // Parse all rows safely
       const rows = parseCSV(csv).slice(1);
 
-      // Find all matching product rows
+      // Filter all rows matching slug
       const productRows = rows.filter(r => r[0] === slug);
 
       if (!productRows.length) {
@@ -89,7 +88,7 @@
         return;
       }
 
-      // Use first row for header fields
+      // Use first row for global hero fields
       const first = productRows[0];
 
       const headerPic   = first[1];
@@ -100,7 +99,7 @@
       const whatItIs    = first[6];
 
       // ============================
-      // Build Benefits Section
+      // BENEFITS (I + J)
       // ============================
       const benefitsHTML = productRows
         .filter(r => r[7])
@@ -113,7 +112,36 @@
         .join("");
 
       // ============================
-      // Build FAQ Section
+      // HOW IT WORKS (K + L)
+      // ============================
+      const howHTML = productRows
+        .filter(r => r[9])
+        .map(r => `
+          <div class="product-how-card">
+            <h3>${r[9]}</h3>
+            <p>${formatText(r[10])}</p>
+          </div>
+        `)
+        .join("");
+
+      // ============================
+      // WHO IT'S FOR (M)
+      // ============================
+      const forHTML = productRows
+        .filter(r => r[11])
+        .map(r => `<li><span class="emoji">✅</span>${r[11]}</li>`)
+        .join("");
+
+      // ============================
+      // WHO IT'S NOT FOR (N)
+      // ============================
+      const notHTML = productRows
+        .filter(r => r[12])
+        .map(r => `<li><span class="emoji">❌</span>${r[12]}</li>`)
+        .join("");
+
+      // ============================
+      // FAQ (O + P)
       // ============================
       const faqHTML = productRows
         .filter(r => r[13])
@@ -126,7 +154,7 @@
         .join("");
 
       // ============================
-      // Render Full Page
+      // Render Full Product Page
       // ============================
       root.innerHTML = `
 
@@ -163,6 +191,37 @@
           </div>
         </section>
 
+        <!-- HOW IT WORKS -->
+        <section class="product-how">
+          <h2>How It Works</h2>
+          <div class="product-how-grid">
+            ${howHTML}
+          </div>
+        </section>
+
+        <!-- WHO IT'S FOR -->
+        <section class="product-who">
+          <h2>Who It’s For (and Not For)</h2>
+
+          <div class="product-who-grid">
+
+            <div class="product-who-card">
+              <h3>Ideal Candidates</h3>
+              <ul class="product-who-list">
+                ${forHTML}
+              </ul>
+            </div>
+
+            <div class="product-who-card">
+              <h3>Not Recommended For</h3>
+              <ul class="product-who-list">
+                ${notHTML}
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
         <!-- FAQ -->
         <section class="product-faq">
           <h2>Frequently Asked Questions</h2>
@@ -171,10 +230,10 @@
 
       `;
 
-      console.log("[Loader] Page rendered successfully.");
+      console.log("[Loader] Full product page rendered.");
 
       // ============================
-      // Activate FAQ Accordion
+      // FAQ Accordion Activation
       // ============================
       document.querySelectorAll(".product-faq-question").forEach(q => {
         q.addEventListener("click", () => {
@@ -186,7 +245,7 @@
 
     })
     .catch(err => {
-      console.error("[Loader] Failed to load product sheet:", err);
+      console.error("[Loader] Spreadsheet load failed:", err);
       root.innerHTML = "<p>Error loading product content.</p>";
     });
 
