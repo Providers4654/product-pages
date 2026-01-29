@@ -15,15 +15,21 @@
 
   console.log("[Loader] Product slug:", slug);
 
-  // ============================
-  // Load CSS (No Cache)
-  // ============================
-const css = document.createElement("link");
-css.rel = "stylesheet";
-css.href =
-  "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
-  Date.now();
-document.head.appendChild(css);
+// ============================
+// Load CSS (Squarespace-safe)
+// ============================
+
+if (!document.getElementById("product-css")) {
+  const style = document.createElement("style");
+  style.id = "product-css";
+
+  style.innerHTML = `
+    @import url("https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=${Date.now()}");
+  `;
+
+  document.head.appendChild(style);
+}
+
 
 
   // ============================
