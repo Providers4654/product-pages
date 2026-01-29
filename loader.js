@@ -144,8 +144,15 @@
       const headerPic   = first[1];
       const headerTitle = first[2];
       const headerSub   = first[3];
-      const btnText     = first[4];
-      const btnLink     = first[5];
+const btnText = first[4];
+
+let btnLink = first[5] || "";
+
+// ✅ Auto-fix relative links from spreadsheet
+if (btnLink && !btnLink.startsWith("http")) {
+  btnLink = "https://mtnhlth.com/" + btnLink.replace(/^\/+/, "");
+}
+
       const whatItIs    = first[6];
 
       // ============================
@@ -191,7 +198,8 @@
               <p>${formatText(headerSub)}</p>
 
               <div class="product-cta">
-                <a href="${btnLink}">${btnText}</a>
+                <a href="${btnLink}" target="_blank" rel="noopener">${btnText}</a>
+
               </div>
             </div>
           </section>
