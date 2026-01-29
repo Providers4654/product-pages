@@ -18,12 +18,13 @@
   // ============================
   // Load CSS (No Cache)
   // ============================
-  const css = document.createElement("link");
-  css.rel = "stylesheet";
-  css.href =
-    "https://providers4654.github.io/product-pages/product-page.css?v=" +
-    Date.now();
-  document.head.appendChild(css);
+const css = document.createElement("link");
+css.rel = "stylesheet";
+css.href =
+  "https://cdn.jsdelivr.net/gh/Providers4654/product-pages@main/product-page.css?v=" +
+  Date.now();
+document.head.appendChild(css);
+
 
   // ============================
   // Safe CSV Parser (Commas OK)
