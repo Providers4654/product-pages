@@ -3,14 +3,35 @@
 /* Repo: product-page.js         */
 /* ============================= */
 
+(function(){
 
-/* ============================= */
-/* FAQ ACCORDION TOGGLE          */
-/* ============================= */
-(function(){if(window.self!==window.top)return;document.querySelectorAll(".product-faq-question").forEach(function(q){q.addEventListener("click",function(){q.classList.toggle("open");var a=q.nextElementSibling;if(a)a.classList.toggle("open");});});})();
+  /* Do not run inside Squarespace editor */
+  if(window.self!==window.top)return;
+
+  /* Only run on product pages */
+  if(!document.getElementById("product-root"))return;
 
 
-/* ============================= */
-/* STICKY CTA SCROLL LOGIC       */
-/* ============================= */
-(function(){if(window.self!==window.top)return;var bar=document.getElementById("stickyCta");if(!bar)return;var height=0;window.addEventListener("scroll",function(){if(window.scrollY>300){bar.style.display="flex";if(!height){height=bar.offsetHeight;document.body.style.paddingBottom=height+"px";}}else{bar.style.display="none";document.body.style.paddingBottom="0px";}});})();
+  /* ============================= */
+  /* FAQ ACCORDION TOGGLE          */
+  /* ============================= */
+  document.querySelectorAll(".product-faq-question").forEach(function(q){
+    q.addEventListener("click",function(){
+      q.classList.toggle("open");
+      var a=q.nextElementSibling;
+      if(a)a.classList.toggle("open");
+    });
+  });
+
+
+  /* ============================= */
+  /* STICKY CTA SCROLL LOGIC       */
+  /* ============================= */
+  var bar=document.getElementById("stickyCta");
+  if(!bar)return;
+
+  window.addEventListener("scroll",function(){
+    bar.style.display=window.scrollY>300?"flex":"none";
+  });
+
+})();
