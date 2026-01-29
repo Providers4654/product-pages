@@ -30,7 +30,12 @@
   // ============================
   // PAGE SLUG DETECTION
   // ============================
-  const slug = window.location.pathname.replace(/^\/+/, "").trim();
+  const slug = window.location.pathname
+  .replace(/^\/+|\/+$/g, "")
+  .split("/")
+  .pop()
+  .trim();
+
 
   console.log("✅ Page slug detected:", slug);
 
