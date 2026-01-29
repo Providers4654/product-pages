@@ -47,12 +47,22 @@
 
 
 /* ============================= */
-/* EQUAL HEIGHT CARDS (CLEAN)    */
+/* HOW / WHO SECTIONS            */
 /* ============================= */
-#product-root .product-page .product-how-grid,#product-root .product-page .product-who-grid{display:grid;align-items:stretch;}
-#product-root .product-page .product-how-card,#product-root .product-page .product-who-card{display:flex;flex-direction:column;padding:22px 26px;}
-#product-root .product-page .product-how-card h3,#product-root .product-page .product-who-card h3{margin:0 0 10px;}
-#product-root .product-page .product-how-card p,#product-root .product-page .product-who-card p{margin:0;}
+#product-root .product-page .product-how,#product-root .product-page .product-who{max-width:1100px;margin:70px auto;padding:0 20px;}
+#product-root .product-page .product-how h2,#product-root .product-page .product-who h2{text-align:center;font-size:32px;font-weight:800;color:#bd243f;margin-bottom:40px;text-transform:uppercase;}
+
+/* ============================= */
+/* GRIDS                         */
+/* ============================= */
+#product-root .product-page .product-how-grid,#product-root .product-page .product-who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;align-items:stretch;}
+
+/* ============================= */
+/* CARDS                         */
+/* ============================= */
+#product-root .product-page .product-how-card,#product-root .product-page .product-who-card{background:#fff;border-radius:18px;padding:26px 28px;box-shadow:0 10px 24px rgba(0,0,0,.08);display:flex;flex-direction:column;}
+#product-root .product-page .product-how-card h3,#product-root .product-page .product-who-card h3{margin:0 0 12px;font-size:18px;font-weight:700;}
+#product-root .product-page .product-how-card p,#product-root .product-page .product-who-card p{margin:0;font-size:15px;line-height:1.6;color:#444;}
 
 
 /* ============================= */
