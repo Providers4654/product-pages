@@ -5,8 +5,6 @@
 
 (function(){
 
-  /* Do not run inside Squarespace editor */
-  if(window.self!==window.top)return;
 
   /* Only run on product pages */
   if(!document.getElementById("product-root"))return;
