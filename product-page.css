@@ -47,9 +47,9 @@
 
 
 /* ============================= */
-/* EQUAL HEIGHT CARDS         */
+/* EQUAL HEIGHT CARDS (FIXED)    */
 /* ============================= */
-#product-root .product-page .product-how-grid,#product-root .product-page .product-who-grid{align-items:stretch;}
+#product-root .product-page .product-how-grid,#product-root .product-page .product-who-grid{display:grid;align-items:stretch;}
 #product-root .product-page .product-how-card,#product-root .product-page .product-who-card{height:100%;display:flex;flex-direction:column;}
 
 
