@@ -119,7 +119,17 @@
       // ============================
       // MATCH PRODUCT ROWS
       // ============================
-      const productRows = rows.filter(r => r[0] === slug);
+      const productRows = rows.filter(r =>
+  r[0]
+    ?.toString()
+    .trim()
+    .toLowerCase()
+    .replace(/\u00A0/g, " ") ===
+  slug
+    .trim()
+    .toLowerCase()
+);
+
 
       console.log("🔍 Matching product rows found:", productRows.length);
 
