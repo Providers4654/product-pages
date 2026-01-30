@@ -39,11 +39,14 @@
 #product-root .product-page .product-benefits h2{color:#fff;text-align:center;font-weight:800;letter-spacing:.08em;}
 #product-root .product-page .product-benefits h2:after{background:#fff;margin:14px auto 48px;}
 #product-root .product-page .product-benefits-overlay{max-width:1100px;margin:0 auto;}
-#product-root .product-page .product-benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;}
+#product-root .product-page .product-benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
 #product-root .product-page .product-benefit-card{background:#fff;border-radius:18px;padding:18px;text-align:center;box-shadow:0 10px 22px rgba(0,0,0,.18);transition:.2s ease;}
 #product-root .product-page .product-benefit-card:hover{transform:translateY(-3px);}
 #product-root .product-page .product-benefit-card h4{font-size:15px;font-weight:700;margin:10px 0 8px;}
 #product-root .product-page .product-benefit-card p{font-size:13px;line-height:1.45;color:#444;}
+@media(max-width:1024px){#product-root .product-page .product-benefits-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){#product-root .product-page .product-benefits-grid{grid-template-columns:1fr;}}
+
 
 
 /* ============================= */
