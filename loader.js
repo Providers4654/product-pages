@@ -226,12 +226,14 @@
       // ============================
       const whoForHTML = productRows
         .filter(r => (r[12] || "").trim())
-        .map(r => `<li>${formatText(r[12])}</li>`)
+        .map(r => `<li><span class="icon check"></span>${formatText(r[12])}</li>`)
+
         .join("");
 
       const whoNotHTML = productRows
         .filter(r => (r[13] || "").trim())
-        .map(r => `<li>${formatText(r[13])}</li>`)
+        .map(r => `<li><span class="icon x"></span>${formatText(r[13])}</li>`)
+
         .join("");
 
       const whoSectionHTML = (whoForHTML || whoNotHTML)
