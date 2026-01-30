@@ -50,10 +50,17 @@
       .replace(/\u00A0/g, " ");
   }
 
-  function formatText(text) {
-    if (!text) return "";
-    return text.replace(/\n/g, "<br><br>");
-  }
+ function formatText(text){
+  if(!text)return "";
+  return text
+    .replace(/\r\n/g,"\n")
+    .replace(/\n{3,}/g,"\n\n")
+    .replace(/\n\n/g,"</p><p>")
+    .replace(/\n/g,"<br>")
+    .replace(/^/,"<p>")
+    .replace(/$/,"</p>");
+}
+
 
   // ============================
   // SAFE CSV PARSER (FIXED)
