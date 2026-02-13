@@ -345,6 +345,30 @@
       `;
 
       console.log("✅ Page HTML rendered successfully.");
+
+// ============================
+// AUTO-INJECT CUSTOM SLOT TEMPLATES
+// ============================
+
+function injectSlotTemplates() {
+  // Find all templates following naming pattern: template-slot-*
+  document.querySelectorAll("template[id^='template-slot-']").forEach(tpl => {
+
+    // Convert template id to slot id
+    // template-slot-after-intro → slot-after-intro
+    const slotId = tpl.id.replace("template-", "");
+    const slot = document.getElementById(slotId);
+
+    if (slot) {
+      slot.appendChild(tpl.content.cloneNode(true));
+      console.log("✅ Injected custom content into:", slotId);
+    }
+  });
+}
+
+injectSlotTemplates();
+
+      
       activateFAQ();
 
     })
